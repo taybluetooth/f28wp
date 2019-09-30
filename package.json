@@ -19,6 +19,7 @@
   "homepage": "https://github.com/taybluetooth/f28wp#readme",
   "dependencies": {
     "express": "^4.17.1",
+    "nunjucks": "^3.2.0",
     "pixi.js": "^5.1.5"
   }
 }
