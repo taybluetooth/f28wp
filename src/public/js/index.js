@@ -1,9 +1,10 @@
-var canvas = document.getElementById("canvas");
-var width = canvas.width;
-var height = canvas.height;
+var canvas = document.getElementById("canvas")
+var width = window.innerWidth
+var height = window.innerHeight
+canvas.width = width;
+canvas.height = height;
 var ctx = canvas.getContext("2d")
-var camera = new Camera(ctx);
-ctx.fillStyle = "red"
+var camera = new Camera(ctx)
 window.addEventListener("keydown", keydown, false)
 window.addEventListener("keyup", keyup, false)
 
@@ -25,6 +26,19 @@ var state = {
   }
 }
 
+function background() {
+  var img = new Image()
+  img.src = "/assets/images/background.png"
+  var ptrn = ctx.createPattern(img, 'repeat')
+  return ptrn;
+}
+
+function loadImg(name) {
+  var img = new Image()
+  img.src = "/assets/images/"+name+".png"
+  return img;
+}
+
 function keydown(event) {
   var key = keyMap[event.keyCode]
   state.pressedKeys[key] = true
@@ -36,31 +50,39 @@ function keyup(event) {
 
 function update(progress) {
   if (state.pressedKeys.left) {
-    state.x -= progress/5
-    camera.moveTo(state.x, state.y);
+    state.x -= progress
   }
   if (state.pressedKeys.right) {
-    state.x += progress/5
-    camera.moveTo(state.x, state.y);
+    state.x += progress
   }
   if (state.pressedKeys.up) {
-    state.y -= progress/5
-    camera.moveTo(state.x, state.y);
+    state.y -= progress
   }
   if (state.pressedKeys.down) {
-    state.y += progress/5
-    camera.moveTo(state.x, state.y);
+    state.y += progress
   }
+  if (state.x > width) {
+    state.x -= width
+  }
+  else if (state.x < 0) {
+    state.x += width
+  }
+  if (state.y > height) {
+    state.y -= height
+  }
+  else if (state.y < 0) {
+    state.y += height
+  }
+  camera.moveTo(state.x, state.y)
 }
 
 function draw() {
-  var img = new Image()
-  img.src = "/assets/images/mountains.jpg"
   ctx.clearRect(0, 0, width, height)
-  ctx.drawImage(img, -state.x, -state.y)
-  camera.begin();
-  ctx.fillRect(state.x - 5, state.y - 5, 10, 10)
-  camera.end();
+  camera.begin()
+  ctx.fillStyle = background()
+  ctx.fillRect(-1920, -1920, 10000, 10000)
+  ctx.drawImage(loadImg('tank'), state.x - 5, state.y - 5, 35, 30)
+  camera.end()
 }
 
 function loop(timestamp) {
@@ -68,6 +90,7 @@ function loop(timestamp) {
 
   update(progress)
   draw()
+  //console.log("X: " + state.x + " Y: " + state.y)
 
   lastRender = timestamp
   window.requestAnimationFrame(loop)
