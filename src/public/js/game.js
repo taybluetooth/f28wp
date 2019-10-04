@@ -1,16 +1,23 @@
 var canvas;
 var context;
+var camera;
 
 objectInit = () => {
   test = new Tank(canvas.width/2, canvas.height/2);
-  turret = new Turret(test.x + 25 / 2 - 3, test.y + 25 / 2 - 30);
 }
 
 setup = () => {
   canvas = document.getElementById("canvas");
   context = canvas.getContext("2d");
+  camera = new Camera(context);
   document.addEventListener('keydown', keyHandle);
   objectInit();
+}
+
+preloadBack = () => {
+  var img = new Image();
+  img.src = "/assets/images/mountains.jpg";
+  context.drawImage(img, 0, 0);
 }
 
 preloadImg = (name) => {
@@ -37,6 +44,7 @@ keyHandle = (e) => {
 }
 
 clearCanv = () => {
+  preloadBack();
   context.save();
   context.setTransform(1,0,0,1,0,0);
   context.clearRect(0, 0, canvas.width, canvas.height);
@@ -53,6 +61,7 @@ class Tank {
     this.show = () => {
       var base = preloadImg('base')
       context.drawImage(base, this.x,this.y,this.width,this.height);
+      
     }
 
     this.rotate = (angle) => {
@@ -64,39 +73,24 @@ class Tank {
     this.move = (forward) => {
       if(forward === true) {
         test.y -= 5;
-        turret.y -= 5;
       }
       else {
         test.y += 5;
-        turret.y += 5;
       }
-    }
-  }
-}
-
-class Turret {
-  constructor(x, y) {
-    this.x = x;
-    this.y = y;
-    this.width = 20;
-    this.height = 30;
-    this.angle = 0;
-
-    this.show = () => {
-      var turret = preloadImg('turret');
-      context.drawImage(turret, this.x,this.y, this.width, this.height);
     }
   }
 }
 
 drawObjects = () => {
+  camera.begin();
   test.show();
-  turret.show();
+  camera.end();
 }
 
 main = () => {
   setInterval(function onTick() {
     clearCanv();
+    preloadBack();
     drawObjects();
   }, 10);
 }
