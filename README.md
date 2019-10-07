@@ -5,7 +5,7 @@ Web Programming Coursework for 2nd Year Computer Science/Software Engineering
 
 A top down 'Tanks' inspired game where the goal is to destroy other users tanks in a MMOG setting. The game will mainly be developed in Javascript,
 but also use potential technologies such as Socket.IO to maintain server connections and MySQL to manage database storage. The development team currently consists of
-Callum Taylor, Iskander Mufazalov, Michael Soutar and Haydn McGrath.
+Callum Taylor, Jacob Mowat, Iskander Mufazalov, Michael Soutar and Haydn McGrath.
 
 # Coursework Details
 A develop an online multiplayer game that that lets players interact and play other people in realtime. Store and view information (e.g., high-scores, number of online active players). Play other
