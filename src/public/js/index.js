@@ -26,6 +26,10 @@ var state = {
   }
 }
 
+function updateText() {
+  document.getElementById("coord").innerHTML = "Current Coordinates: X: " + state.x.toFixed(2) + " Y: " + state.y.toFixed(2)
+}
+
 function background() {
   var img = new Image()
   img.src = "/assets/images/background.png"
@@ -50,28 +54,28 @@ function keyup(event) {
 
 function update(progress) {
   if (state.pressedKeys.left) {
-    state.x -= progress
+    state.x -= progress/3
   }
   if (state.pressedKeys.right) {
-    state.x += progress
+    state.x += progress/3
   }
   if (state.pressedKeys.up) {
-    state.y -= progress
+    state.y -= progress/3
   }
   if (state.pressedKeys.down) {
-    state.y += progress
+    state.y += progress/3
   }
-  if (state.x > width) {
-    state.x -= width
+  if (state.x > 1000) {
+    state.x -= 1000
   }
   else if (state.x < 0) {
-    state.x += width
+    state.x += 1000
   }
-  if (state.y > height) {
-    state.y -= height
+  if (state.y > 1000) {
+    state.y -= 1000
   }
   else if (state.y < 0) {
-    state.y += height
+    state.y += 1000
   }
   camera.moveTo(state.x, state.y)
 }
@@ -81,7 +85,11 @@ function draw() {
   camera.begin()
   ctx.fillStyle = background()
   ctx.fillRect(-1920, -1920, 10000, 10000)
-  ctx.drawImage(loadImg('tank'), state.x - 5, state.y - 5, 35, 30)
+  ctx.font = "10px Poppins";
+  ctx.fillStyle = "white";
+  ctx.textAlign = "center";
+  ctx.fillText("Bob", state.x + 20, state.y + 50);
+  ctx.drawImage(loadImg('tank'), state.x, state.y, 40, 40)
   camera.end()
 }
 
@@ -89,8 +97,8 @@ function loop(timestamp) {
   var progress = timestamp - lastRender
 
   update(progress)
+  updateText()
   draw()
-  //console.log("X: " + state.x + " Y: " + state.y)
 
   lastRender = timestamp
   window.requestAnimationFrame(loop)
