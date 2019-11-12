@@ -10,6 +10,13 @@ function Tank(game, name, id, local, x, y, hp){
   this.hp = hp;
   this.damage = 10;
   this.level = 1;
+  this.dir = {
+    up: false,
+    down: false,
+    left: false,
+    right: false
+  };
+  this.colour = "#000000";
 }
 
 Tank.prototype.update = function() {
@@ -17,7 +24,8 @@ Tank.prototype.update = function() {
 };
 
 Tank.prototype.render = function() {
-  this.game.fillStyle = "#ff0000";
+  this.colour = Tank.prototype.colour();
+  this.game.fillStyle = this.colour;
   this.game.fillRect(this.x, this.y, this.width, this.height);
 };
 
@@ -28,3 +36,12 @@ Tank.prototype.fire = function() {
 Tank.prototype.levelUp = function() {
   return 0;
 };
+
+Tank.prototype.colour = function() {
+  var letters = '0123456789ABCDEF';
+  var colour = '#';
+  for (var i = 0; i < 6; i++) {
+    colour += letters[Math.floor(Math.random() * 16)];
+  }
+  return colour;
+}
