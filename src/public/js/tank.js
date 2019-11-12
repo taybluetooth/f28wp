@@ -29,6 +29,10 @@ Tank.prototype.render = function() {
   this.game.fillRect(this.x, this.y, this.width, this.height);
 };
 
+Tank.prototype.update = function() {
+  return 0;
+}
+
 Tank.prototype.fire = function() {
   return 0;
 };

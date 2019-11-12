@@ -29,24 +29,26 @@ Game.prototype.initPlayers = function() {
 
 Game.prototype.controls = function(tank) {
 
+    var movement = new Physics();
+
 		$(document).keypress( function(e){
 			var k = e.keyCode || e.which;
 			switch(k){
 				case 119: //W
 					tank.dir.up = true;
-          console.log("w");
+          movement.applyForce(tank);
 					break;
 				case 100: //D
 					tank.dir.right = true;
-          console.log("d");
+          movement.applyForce(tank);
 					break;
 				case 115: //S
 					tank.dir.down = true;
-          console.log("s");
+          movement.applyForce(tank);
 					break;
 				case 97: //A
 					tank.dir.left = true;
-          console.log("a");
+          movement.applyForce(tank);
 					break;
 			}
 
@@ -55,19 +57,19 @@ Game.prototype.controls = function(tank) {
 			switch(k){
 				case 87: //W
 					tank.dir.up = false;
-          console.log("w");
+          console.log("Current X:" + tank.y);
 					break;
 				case 68: //D
 					tank.dir.right = false;
-          console.log("d");
+          console.log("Current X:" + tank.x);
 					break;
 				case 83: //S
 					tank.dir.down = false;
-          console.log("s");
+          console.log("Current Y:" + tank.y);
 					break;
 				case 65: //A
 					tank.dir.left = false;
-          console.log("a");
+          console.log("Current X:" + tank.x);
 					break;
 			}
     });
