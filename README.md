@@ -33,8 +33,6 @@ Access to a web server for online publication, access to a software version cont
 access to a limited range of web services (e.g. a high-score service, game-state management
 services)
 
-# Goals
-
 # Requirements
 - Github
   + show contributions weekly (commits, tasks, bug fixes, etc)
@@ -49,3 +47,10 @@ services)
 - HTML5/CSS/Javascript complient
 - Animated and dynamic
 
+# Server Instructions
+
+- launch git bash or a terminal
+- ensure express js is install (npm installl express)
+- navigate to best boy tank src directory
+- type npm run start
+- in browser go to localhost:3000
