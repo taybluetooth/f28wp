@@ -5,6 +5,7 @@ function Tank(game, name, id, local, x, y, hp){
   this.local = local;
   this.x = x;
   this.y = y;
+  this.rotation = 0;
   this.width = 50;
   this.height = 80;
   this.hp = hp;
@@ -21,6 +22,13 @@ Tank.prototype.render = function() {
 
 Tank.prototype.update = function() {
   this.movement.applyForce(this);
+  this.movement.applyRotation(this);
+}
+
+Tank.prototype.rotate = function() {
+  this.game.translate(this.x + this.width/2, this.y + this.height/2);
+  this.game.rotate(this.rotation*(Math.PI / 180));
+  this.game.translate(-(this.x + this.width/2), -(this.y + this.height/2));
 }
 
 Tank.prototype.fire = function() {
