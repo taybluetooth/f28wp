@@ -13,6 +13,17 @@ Game.prototype.initSocket = function() {
   return 0;
 };
 
+Game.prototype.update = function() {
+
+  this.ctx.clearRect(0, 0, this.map.width, this.map.height);
+
+  this.tanks.forEach(function(tank) {
+    tank.update(this.ctx);
+    tank.render(this.ctx);
+  });
+
+}
+
 Game.prototype.initMap = function() {
   var body = document.getElementsByTagName("body")[0];
   this.map.id = 'map';
@@ -29,26 +40,20 @@ Game.prototype.initPlayers = function() {
 
 Game.prototype.controls = function(tank) {
 
-    var movement = new Physics();
-
 		$(document).keypress( function(e){
 			var k = e.keyCode || e.which;
 			switch(k){
 				case 119: //W
-					tank.dir.up = true;
-          movement.applyForce(tank);
+					tank.movement.dir.up = true;
 					break;
 				case 100: //D
-					tank.dir.right = true;
-          movement.applyForce(tank);
+					tank.movement.dir.right = true;
 					break;
 				case 115: //S
-					tank.dir.down = true;
-          movement.applyForce(tank);
+					tank.movement.dir.down = true;
 					break;
 				case 97: //A
-					tank.dir.left = true;
-          movement.applyForce(tank);
+					tank.movement.dir.left = true;
 					break;
 			}
 
@@ -56,20 +61,16 @@ Game.prototype.controls = function(tank) {
 			var k = e.keyCode || e.which;
 			switch(k){
 				case 87: //W
-					tank.dir.up = false;
-          console.log("Current X:" + tank.y);
+					tank.movement.dir.up = false;
 					break;
 				case 68: //D
-					tank.dir.right = false;
-          console.log("Current X:" + tank.x);
+					tank.movement.dir.right = false;
 					break;
 				case 83: //S
-					tank.dir.down = false;
-          console.log("Current Y:" + tank.y);
+					tank.movement.dir.down = false;
 					break;
 				case 65: //A
-					tank.dir.left = false;
-          console.log("Current X:" + tank.x);
+					tank.movement.dir.left = false;
 					break;
 			}
     });
@@ -80,3 +81,7 @@ game.initMap();
 game.initTank();
 game.initPlayers();
 game.controls(game.tanks[0]);
+
+setInterval(function() {
+  game.update();
+}, 1000/30);
