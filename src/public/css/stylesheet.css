@@ -1,0 +1,44 @@
+#map {
+  border: 1px solid;
+}
+
+.container {
+  text-align: center;
+}
+
+.info {
+  padding: 11px;
+  position: fixed;
+  background-color: #36454f;
+  text-align: center;
+  width: 380px;
+}
+
+.info p {
+  display: inline;
+  font-family: 'Poppins', sans-serif;
+  color: white;
+}
+
+.bar {
+  text-align: center;
+  width: 100%;
+  background-color: grey;
+  border-radius: 10px;
+}
+
+#level {
+  text-align: center;
+  height: 20px;
+  background-color: yellow;
+  width: 100%;
+  border-radius: 10px;
+}
+
+#hp {
+  text-align: center;
+  height: 20px;
+  background-color: red;
+  width: 100%;
+  border-radius: 10px;
+}

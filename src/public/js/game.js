@@ -5,7 +5,7 @@ function Game() {
 }
 
 Game.prototype.initTank = function() {
-  var tank = new Tank(this.ctx, "Callum", 1, true, 100, 100, 100);
+  var tank = new Tank(this.ctx, "Callum", 1, true, this.map.width/2, this.map.height-300, 100);
   this.tanks.push(tank);
 };
 
@@ -14,8 +14,6 @@ Game.prototype.initSocket = function() {
 };
 
 Game.prototype.update = function() {
-
-  this.ctx.clearRect(0, 0, this.map.width, this.map.height);
 
   this.tanks.forEach(function(tank) {
     tank.update(this.ctx);
