@@ -1,3 +1,11 @@
+var fs = require('fs');
+var http = require('http');
+var https = require('https');
+var privateKey  = fs.readFileSync('../../keys/sslcert/server.key', 'utf8');
+var certificate = fs.readFileSync('../../keys/server.crt', 'utf8');
+
+var credentials = {key: privateKey, cert: certificate};
+
 const express = require('express')
 const app = express()
 var path = require('path')
@@ -20,5 +28,9 @@ app.get('/get/session_id', (req, res) => {
 	res.send(id);
 });
 
-app.listen(process.env.port || 3000);
-console.log('BEST BOY TANK LISTENING ON PORT 3000');
+var httpServer = http.createServer(app);
+var httpsServer = https.createServer(credentials, app);
+
+httpServer.listen(process.env.http_port || 8000);
+httpsServer.listen(process.env.https_port || 8443);
+console.log('BEST BOY TANK LISTENING ON PORT 8000 & 8443');
