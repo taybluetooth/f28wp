@@ -31,6 +31,6 @@ app.get('/get/session_id', (req, res) => {
 var httpServer = http.createServer(app);
 var httpsServer = https.createServer(credentials, app);
 
-httpServer.listen(process.env.http_port || 8000);
-httpsServer.listen(process.env.https_port || 8443);
-console.log('BEST BOY TANK LISTENING ON PORT 8000 & 8443');
+httpServer.listen(process.env.http_port || 80);
+httpsServer.listen(process.env.https_port || 443);
+console.log('BEST BOY TANK LISTENING ON PORT 80 & 443');
