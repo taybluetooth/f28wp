@@ -1,8 +1,8 @@
 var fs = require('fs');
 var http = require('http');
 var https = require('https');
-var privateKey  = fs.readFileSync('../../keys/privkey.pem', 'utf8');
-var certificate = fs.readFileSync('../../keys/cert.pem', 'utf8');
+var privateKey  = fs.readFileSync('/etc/letsencrypt/live/tor.mowat.dev/privkey.pem', 'utf8');
+var certificate = fs.readFileSync('/etc/letsencrypt/live/tor.mowat.dev/cert.pem', 'utf8');
 
 var credentials = {key: privateKey, cert: certificate};
 
