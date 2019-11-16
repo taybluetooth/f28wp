@@ -106,7 +106,7 @@ function draw() {
   ctx.save();
   ctx.translate(state.position.x, state.position.y)
   ctx.rotate((Math.PI/180) * state.rotation)
-  ctx.drawImage(loadImg('tank'), 0, 0, 40, 40)
+  ctx.drawImage(loadImg('tank'), -20, -20, 40, 40)
   ctx.restore()
   camera.end();
 }
