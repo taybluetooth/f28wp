@@ -1,4 +1,4 @@
-var fs = require('fs');
+// var fs = require('fs');
 var http = require('http');
 // var https = require('https');
 // var privateKey  = fs.readFileSync('/etc/letsencrypt/live/tor.mowat.dev/privkey.pem', 'utf8');
