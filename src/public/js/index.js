@@ -1,142 +1,112 @@
-var canvas = document.getElementById("canvas")
-var ctx = canvas.getContext("2d")
-var camera = new Camera(ctx);
-var width
-var height
+function Game() {
+  this.tanks = [];
+  this.canvas = document.getElementById("canvas")
+  this.ctx = this.canvas.getContext("2d")
+  this.camera = new Camera(this.ctx);
+  this.width;
+  this.height;
 
-var resize = function() {
-  width = window.innerWidth * 2
-  height = window.innerHeight * 2
-  canvas.width = width
-  canvas.height = height
-}
-window.onresize = resize
-resize()
+  this.keymap = {
+    68: 'right',
+    65: 'left',
+    87: 'up',
+    83: 'down'
+  };
 
-var state = {
-  position: {
-    x: (width / 2),
-    y: (height / 2)
-  },
-  movement: {
-    x: 0,
-    y: 0
-  },
-  rotation: 0,
-  pressedKeys: {
+  this.pressedKeys = {
     left: false,
     right: false,
     up: false,
     down: false
-  }
+  };
 }
 
-function background() {
+Game.prototype.resize = function() {
+  this.width = window.innerWidth * 2
+  this.height = window.innerHeight * 2
+  this.canvas.width = this.width
+  this.canvas.height = this.height
+}
+
+Game.prototype.background = function() {
   var img = new Image()
   img.src = "/assets/images/background.png"
-  var ptrn = ctx.createPattern(img, 'repeat')
+  var ptrn = this.ctx.createPattern(img, 'repeat')
   return ptrn;
 }
 
-function loadImg(name) {
+Game.prototype.initTank = function() {
+  var tank = new Tank(this, this.ctx, "Callum", 1, true, 400, 400, 100);
+  this.tanks.push(tank);
+};
+
+Game.prototype.initSocket = function() {
+  return 0;
+};
+
+Game.prototype.loadImg = function(name) {
   var img = new Image()
   img.src = "/assets/images/"+name+".png"
   return img;
 }
 
-function update(progress) {
-  var p = progress * 3
-
-  updateRotation(p)
-  updateMovement(p)
-  updatePosition(p)
-
-  camera.moveTo(state.position.x, state.position.y)
+Game.prototype.update = function(progress) {
+  var p = progress * 2;
+  this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+  this.camera.begin();
+  this.ctx.fillStyle = this.background()
+  this.ctx.fillRect(-500, -500, 10000, 10000)
+  this.tanks.forEach(function(tank) {
+    tank.render();
+    tank.updateRotation(p);
+    tank.updateMovement(p);
+    tank.updatePosition(p);
+  });
+  this.camera.moveTo(this.tanks[0].position.x, this.tanks[0].position.y)
+  this.camera.end();
 }
 
-function updateRotation(p) {
-  if (state.pressedKeys.left) {
-    state.rotation -= p / 5
-  }
-  else if (state.pressedKeys.right) {
-    state.rotation += p / 5
-  }
-}
+Game.prototype.initMap = function() {
+  var img = new Image()
+  img.src = "/assets/images/background.png"
+  this.ctx.createPattern(img, 'repeat');
+};
 
-function updateMovement(p) {
+Game.prototype.initPlayers = function() {
+  this.tanks.forEach(function(tank) {
+    tank.render();
+  });
+};
 
-  var accelerationVector = {
-    x: p * 0.2 * Math.cos((state.rotation-90) * (Math.PI/180)),
-    y: p * 0.2 * Math.sin((state.rotation-90) * (Math.PI/180))
-  }
+Game.prototype.keydown = function(event) {
+  var keyCode = event.keyCode;
+  game.pressedKeys[game.keymap[keyCode]] = true;
+};
 
-  if (state.pressedKeys.up) {
-    state.position.x += accelerationVector.x
-    state.position.y += accelerationVector.y
-  }
-  else if (state.pressedKeys.down) {
-    state.position.x -= accelerationVector.x
-    state.position.y -= accelerationVector.y
-  }
+Game.prototype.keyup = function(event) {
+  var keyCode = event.keyCode;
+  game.pressedKeys[game.keymap[keyCode]] = false;
+};
 
-}
-
-function updatePosition(p) {
-
-  // Detect boundaries
-  if (state.position.x > width-40) {
-    state.position.x -= p/5
-  }
-  else if (state.position.x < 40) {
-    state.position.x += p/5
-  }
-  if (state.position.y > height-40) {
-    state.position.y -= p/5
-  }
-  else if (state.position.y < 40) {
-    state.position.y += p/5
-  }
-}
-
-function draw() {
-  ctx.clearRect(0, 0, width, height)
-  camera.begin()
-  ctx.fillStyle = background()
-  ctx.fillRect(-500, -500, 10000, 10000)
-  ctx.save();
-  ctx.translate(state.position.x, state.position.y)
-  ctx.rotate((Math.PI/180) * state.rotation)
-  ctx.drawImage(loadImg('tank'), 0, 0, 40, 40)
-  ctx.restore()
-  camera.end();
-}
+var game = new Game();
+game.initMap();
+game.initTank();
+game.initPlayers();
 
 function loop(timestamp) {
-  var progress = timestamp - lastRender
+  var progress = timestamp - lastRender;
 
-  update(progress)
-  draw()
+  game.update(progress);
 
-  lastRender = timestamp
-  window.requestAnimationFrame(loop)
-}
+  lastRender = timestamp;
+  window.requestAnimationFrame(loop);
+};
+
 var lastRender = 0
 window.requestAnimationFrame(loop)
 
-var keyMap = {
-  68: 'right',
-  65: 'left',
-  87: 'up',
-  83: 'down'
-}
-function keydown(event) {
-  var key = keyMap[event.keyCode]
-  state.pressedKeys[key] = true
-}
-function keyup(event) {
-  var key = keyMap[event.keyCode]
-  state.pressedKeys[key] = false
-}
+window.onresize = game.resize;
+game.resize();
 
-window.addEventListener("keydown", keydown, false)
-window.addEventListener("keyup", keyup, false)
+window.addEventListener("keydown", game.keydown, false);
+window.addEventListener("keyup", game.keyup, false);
