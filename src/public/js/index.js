@@ -10,14 +10,16 @@ function Game() {
     68: 'right',
     65: 'left',
     87: 'up',
-    83: 'down'
+    83: 'down',
+    32: 'space'
   };
 
   this.pressedKeys = {
     left: false,
     right: false,
     up: false,
-    down: false
+    down: false,
+    space: false
   };
 }
 
@@ -26,13 +28,6 @@ Game.prototype.resize = function() {
   this.height = window.innerHeight * 2
   this.canvas.width = this.width
   this.canvas.height = this.height
-}
-
-Game.prototype.background = function() {
-  var img = new Image()
-  img.src = "/assets/images/background.png"
-  var ptrn = this.ctx.createPattern(img, 'repeat')
-  return ptrn;
 }
 
 Game.prototype.initTank = function() {
@@ -57,13 +52,14 @@ Game.prototype.update = function(progress) {
   var p = progress * 2;
   this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
   this.camera.begin();
-  this.ctx.fillStyle = this.background()
+  this.ctx.fillStyle = "#ffffff";
   this.ctx.fillRect(-500, -500, 10000, 10000)
   this.tanks.forEach(function(tank) {
     tank.render();
     tank.updateRotation(p);
     tank.updateMovement(p);
     tank.updatePosition(p);
+    tank.fire();
   });
   this.camera.moveTo(this.tanks[0].position.x, this.tanks[0].position.y)
   this.camera.end();

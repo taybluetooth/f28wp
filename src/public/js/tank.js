@@ -14,6 +14,7 @@ function Tank(arena, ctx, name, id, local, x, y, hp){
   this.hp = hp;
   this.damage = 10;
   this.level = 1;
+  this.bullets = [];
 };
 
 Tank.prototype.info = function() {
@@ -80,10 +81,18 @@ Tank.prototype.updatePosition = function(p) {
   else if (this.position.y < 40) {
     this.position.y += p/5
   }
-}
+};
 
 Tank.prototype.fire = function() {
-  return 0;
+  if(this.arena.pressedKeys.space) {
+    var bullet = new Bullet(this.arena, this, this.position.x, this.position.y)
+    this.bullets.push(bullet);
+  }
+  this.bullets.forEach(function(bullet) {
+    bullet.render();
+    bullet.update();
+  });
+ setInterval(function(){ this.bullets.pop() }, 3000);
 };
 
 Tank.prototype.levelUp = function() {
