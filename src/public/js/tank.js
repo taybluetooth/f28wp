@@ -8,10 +8,6 @@ function Tank(arena, ctx, name, id, local, x, y, hp){
     x: x,
     y: y
   };
-  this.movement = {
-    x: x,
-    y: y
-  };
   this.rotation = 0;
   this.width = 50;
   this.height = 80;
@@ -20,7 +16,14 @@ function Tank(arena, ctx, name, id, local, x, y, hp){
   this.level = 1;
 };
 
+Tank.prototype.info = function() {
+  this.ctx.strokeStyle = "black";
+  this.ctx.fillStyle="#00FF00";
+  this.ctx.fillRect(this.position.x-(this.width/2), this.position.y + 25,50,3);
+}
+
 Tank.prototype.render = function() {
+  this.info();
   this.ctx.save();
   this.ctx.translate(this.position.x, this.position.y)
   this.ctx.rotate((Math.PI/180) * this.rotation)
@@ -29,28 +32,35 @@ Tank.prototype.render = function() {
 };
 
 Tank.prototype.updateRotation = function(p) {
-  if (this.arena.pressedKeys.left) {
-    this.rotation -= p / 5
-  }
-  else if (this.arena.pressedKeys.right) {
-    this.rotation += p / 5
+
+  if(this.local) {
+    if (this.arena.pressedKeys.left) {
+      this.rotation -= p / 5
+    }
+    else if (this.arena.pressedKeys.right) {
+      this.rotation += p / 5
+    }
   }
 }
 
 Tank.prototype.updateMovement = function(p) {
 
-  var accelerationVector = {
-    x: p * 0.2 * Math.cos((this.rotation-90) * (Math.PI/180)),
-    y: p * 0.2 * Math.sin((this.rotation-90) * (Math.PI/180))
-  }
+  if(this.local) {
 
-  if (this.arena.pressedKeys.up) {
-    this.position.x += accelerationVector.x;
-    this.position.y += accelerationVector.y;
-  }
-  else if (this.arena.pressedKeys.down) {
-    this.position.x -= accelerationVector.x;
-    this.position.y -= accelerationVector.y;
+    var accelerationVector = {
+      x: p * 0.2 * Math.cos((this.rotation-90) * (Math.PI/180)),
+      y: p * 0.2 * Math.sin((this.rotation-90) * (Math.PI/180))
+    }
+
+    if (this.arena.pressedKeys.up) {
+      this.position.x += accelerationVector.x;
+      this.position.y += accelerationVector.y;
+    }
+    else if (this.arena.pressedKeys.down) {
+      this.position.x -= accelerationVector.x;
+      this.position.y -= accelerationVector.y;
+    }
+
   }
 
 }

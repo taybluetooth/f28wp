@@ -37,7 +37,10 @@ Game.prototype.background = function() {
 
 Game.prototype.initTank = function() {
   var tank = new Tank(this, this.ctx, "Callum", 1, true, 400, 400, 100);
+  // Test Tank to see if rendering server tanks work.
+  //var tank2 = new Tank(this, this.ctx, "Fraser", 2, false, 100, 100, 100);
   this.tanks.push(tank);
+  //this.tanks.push(tank2);
 };
 
 Game.prototype.initSocket = function() {
