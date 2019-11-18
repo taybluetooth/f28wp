@@ -1,18 +1,8 @@
-class Bullet{
-  var visible;
+var bulletVisible = false;
+bullet.hide();
 
-Bullet(x,y,game){
-this.x = x;
-this.y = y;
-
-
-}
-
-  fire(){
-
-  }
-
-
-
+function shoot(){
+  bullet = new Sprite(canvas,loadImg('bullet'),40,20)
+  bullet.show();
 
 }
