@@ -61,9 +61,7 @@ Tank.prototype.updateMovement = function(p) {
       this.position.x -= accelerationVector.x;
       this.position.y -= accelerationVector.y;
     }
-
   }
-
 }
 
 Tank.prototype.updatePosition = function(p) {
@@ -85,25 +83,16 @@ Tank.prototype.updatePosition = function(p) {
 
 Tank.prototype.fire = function() {
   if(this.arena.pressedKeys.space) {
-    var bullet = new Bullet(this.arena, this, this.position.x, this.position.y)
+    var bullet = new Bullet(this.arena, this, this.position.x, this.position.y, this.rotation);
     this.bullets.push(bullet);
   }
   this.bullets.forEach(function(bullet) {
-    bullet.render();
     bullet.update();
+    bullet.render();
   });
- setInterval(function(){ this.bullets.pop() }, 3000);
+  //this.bullets.pop();
 };
 
 Tank.prototype.levelUp = function() {
   return 0;
 };
-
-Tank.prototype.colour = function() {
-  var letters = '0123456789ABCDEF';
-  var colour = '#';
-  for (var i = 0; i < 6; i++) {
-    colour += letters[Math.floor(Math.random() * 16)];
-  }
-  return colour;
-}

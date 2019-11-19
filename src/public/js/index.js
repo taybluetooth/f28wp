@@ -1,5 +1,6 @@
 function Game() {
   this.tanks = [];
+  this.gameFood = [];
   this.canvas = document.getElementById("canvas")
   this.ctx = this.canvas.getContext("2d")
   this.camera = new Camera(this.ctx);
@@ -30,12 +31,18 @@ Game.prototype.resize = function() {
   this.canvas.height = this.height
 }
 
+Game.prototype.initFood = function() {
+  for(i = 0; i < 100; i++) {
+    this.gameFood.push(new Food(this,
+      this.randomCoord(this.canvas.width),
+      this.randomCoord(this.canvas.height),
+      this.colour()));
+  }
+}
+
 Game.prototype.initTank = function() {
   var tank = new Tank(this, this.ctx, "Callum", 1, true, 400, 400, 100);
-  // Test Tank to see if rendering server tanks work.
-  //var tank2 = new Tank(this, this.ctx, "Fraser", 2, false, 100, 100, 100);
   this.tanks.push(tank);
-  //this.tanks.push(tank2);
 };
 
 Game.prototype.initSocket = function() {
@@ -53,7 +60,8 @@ Game.prototype.update = function(progress) {
   this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
   this.camera.begin();
   this.ctx.fillStyle = "#ffffff";
-  this.ctx.fillRect(-500, -500, 10000, 10000)
+  this.ctx.fillRect(-500, -500, 10000, 10000);
+
   this.tanks.forEach(function(tank) {
     tank.render();
     tank.updateRotation(p);
@@ -61,6 +69,11 @@ Game.prototype.update = function(progress) {
     tank.updatePosition(p);
     tank.fire();
   });
+
+  this.gameFood.forEach(function(food) {
+    food.render();
+  });
+
   this.camera.moveTo(this.tanks[0].position.x, this.tanks[0].position.y)
   this.camera.end();
 }
@@ -87,10 +100,26 @@ Game.prototype.keyup = function(event) {
   game.pressedKeys[game.keymap[keyCode]] = false;
 };
 
+Game.prototype.colour = function() {
+  var letters = '0123456789ABCDEF';
+  var colour = '#';
+  for (var i = 0; i < 6; i++) {
+    colour += letters[Math.floor(Math.random() * 16)];
+  }
+  return colour;
+}
+
+Game.prototype.randomCoord = function(max) {
+  return Math.floor(Math.random() * Math.floor(max));
+}
+
 var game = new Game();
 game.initMap();
+game.initFood();
 game.initTank();
 game.initPlayers();
+
+// CLIENT GAME LOOP (TO BE ALTERED TO WORK ON SERVER) //
 
 function loop(timestamp) {
   var progress = timestamp - lastRender;
@@ -106,6 +135,8 @@ window.requestAnimationFrame(loop)
 
 window.onresize = game.resize;
 game.resize();
+
+// EVENT HANDLERS //
 
 window.addEventListener("keydown", game.keydown, false);
 window.addEventListener("keyup", game.keyup, false);
