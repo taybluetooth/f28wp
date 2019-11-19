@@ -32,11 +32,10 @@ Game.prototype.resize = function() {
 }
 
 Game.prototype.initFood = function() {
-  for(i = 0; i < 100; i++) {
-    this.gameFood.push(new Food(this,
-      this.randomCoord(this.canvas.width),
-      this.randomCoord(this.canvas.height),
-      this.colour()));
+  for(i = 0; i < 1000; i++) {
+    var x = this.randomInt(3000);
+    var y = this.randomInt(3000);
+    this.gameFood.push(new Food(this, x, y, this.colour()));
   }
 }
 
@@ -60,7 +59,7 @@ Game.prototype.update = function(progress) {
   this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
   this.camera.begin();
   this.ctx.fillStyle = "#ffffff";
-  this.ctx.fillRect(-500, -500, 10000, 10000);
+  this.ctx.fillRect(-3000, -3000, 3000, 3000);
 
   this.tanks.forEach(function(tank) {
     tank.render();
@@ -72,6 +71,7 @@ Game.prototype.update = function(progress) {
 
   this.gameFood.forEach(function(food) {
     food.render();
+    food.update();
   });
 
   this.camera.moveTo(this.tanks[0].position.x, this.tanks[0].position.y)
@@ -109,7 +109,7 @@ Game.prototype.colour = function() {
   return colour;
 }
 
-Game.prototype.randomCoord = function(max) {
+Game.prototype.randomInt = function(max) {
   return Math.floor(Math.random() * Math.floor(max));
 }
 

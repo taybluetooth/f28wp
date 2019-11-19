@@ -66,18 +66,23 @@ Tank.prototype.updateMovement = function(p) {
 
 Tank.prototype.updatePosition = function(p) {
 
+  var accelerationVector = {
+    x: p * 0.2 * Math.cos((this.rotation-90) * (Math.PI/180)),
+    y: p * 0.2 * Math.sin((this.rotation-90) * (Math.PI/180))
+  }
+
   // Detect boundaries
-  if (this.position.x > this.arena.canvas.width-40) {
-    this.position.x -= p/5
+  if (this.position.x > 3000) {
+    this.position.x -= accelerationVector.x;
   }
-  else if (this.position.x < 40) {
-    this.position.x += p/5
+  else if (this.position.x < -3000) {
+    this.position.x += accelerationVector.x;
   }
-  if (this.position.y > this.arena.canvas.height-40) {
-    this.position.y -= p/5
+  if (this.position.y > 3000) {
+    this.position.y -= accelerationVector.y;
   }
-  else if (this.position.y < 40) {
-    this.position.y += p/5
+  else if (this.position.y < -3000) {
+    this.position.y += accelerationVector.y;
   }
 };
 
