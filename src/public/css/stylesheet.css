@@ -30,7 +30,7 @@ canvas {
     0 -2px 0 #000000;
 }
 
-.level-bar {
+#level-bar {
   width: 300px;
   background-color: gray;
   position: absolute;
@@ -39,14 +39,14 @@ canvas {
   right: -170px;
 }
 
-.level-bar .inner-bar {
-  width: 16%;
+#level-bar #inner-bar {
+  width: 0%;
   background-color: yellow;
   height: 15px;
   border-radius: 5px;
 }
 
-.level-text {
+#level-text {
   font-family: "Alata", sans-serif;
   color: white;
   text-shadow: -1px -1px 0 #000000,

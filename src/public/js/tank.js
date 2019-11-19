@@ -13,6 +13,7 @@ function Tank(arena, ctx, name, id, local, x, y, hp){
   this.height = 80;
   this.hp = hp;
   this.damage = 10;
+  this.exp = 0;
   this.level = 1;
   this.bullets = [];
 };
@@ -99,5 +100,13 @@ Tank.prototype.fire = function() {
 };
 
 Tank.prototype.levelUp = function() {
-  return 0;
+  if(this.exp === this.level * 100) {
+    this.level += 1;
+    this.exp = 0;
+  }
+  return this.level;
 };
+
+Tank.prototype.expUp = function(amount) {
+    this.exp += amount;
+}

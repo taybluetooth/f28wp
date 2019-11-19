@@ -55,7 +55,7 @@ Game.prototype.loadImg = function(name) {
 }
 
 Game.prototype.update = function(progress) {
-  var p = progress * 2;
+  var p = progress;
   this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
   this.camera.begin();
   this.ctx.fillStyle = "#ffffff";
@@ -67,6 +67,14 @@ Game.prototype.update = function(progress) {
     tank.updateMovement(p);
     tank.updatePosition(p);
     tank.fire();
+    Game.prototype.checkCollision(tank);
+
+    if(tank.local) {
+      // Calculate percentage of exp gained thus far by player.
+      var totalExp = tank.exp / (tank.level * 100) * 100;
+      document.getElementById('level-text').innerHTML = "Level " + tank.levelUp();
+      document.getElementById('inner-bar').style.width = totalExp + "%";
+    }
   });
 
   this.gameFood.forEach(function(food) {
@@ -76,6 +84,7 @@ Game.prototype.update = function(progress) {
 
   this.camera.moveTo(this.tanks[0].position.x, this.tanks[0].position.y)
   this.camera.end();
+
 }
 
 Game.prototype.initMap = function() {
@@ -89,6 +98,20 @@ Game.prototype.initPlayers = function() {
     tank.render();
   });
 };
+
+Game.prototype.checkCollision = function(tank) {
+  game.gameFood.forEach(function(food) {
+      if(food.position.x > tank.position.x &&
+         food.position.x < tank.position.x + tank.width / 2 &&
+         food.position.y > tank.position.y &&
+         food.position.y < tank.position.y + tank.height / 2)
+      {
+        var index = game.gameFood.indexOf(food);
+        tank.expUp(food.exp);
+        game.gameFood.splice(index, 1);
+      }
+  });
+}
 
 Game.prototype.keydown = function(event) {
   var keyCode = event.keyCode;
