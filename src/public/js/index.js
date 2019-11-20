@@ -23,6 +23,13 @@ function Game() {
   };
 }
 
+Game.prototype.music = function() {
+  var audio = new Audio('/assets/music/Gameplay.mp3');
+  audio.loop = true;
+  audio.volume = 0.2;
+  audio.play();
+}
+
 Game.prototype.resize = function() {
   this.width = window.innerWidth * 2
   this.height = window.innerHeight * 2
@@ -72,7 +79,9 @@ Game.prototype.update = function(progress) {
       // Calculate percentage of exp gained thus far by player.
       var totalExp = tank.exp / (tank.level * 100) * 100;
       document.getElementById('level-text').innerHTML = "Level " + tank.levelUp();
+      document.getElementById('score-text').innerHTML = "Score " + tank.getScore();
       document.getElementById('inner-bar').style.width = totalExp + "%";
+
     }
   });
 
@@ -106,6 +115,7 @@ Game.prototype.checkCollision = function(tank) {
       food.position.y < tank.position.y + tank.height / 2) {
       var index = game.gameFood.indexOf(food);
       tank.expUp(food.exp);
+      tank.increaseScore(food.score);
       game.gameFood.splice(index, 1);
     }
   });
@@ -152,6 +162,7 @@ game.initMap();
 game.initFood();
 game.initTank();
 game.initPlayers();
+game.music();
 
 // CLIENT GAME LOOP (TO BE ALTERED TO WORK ON SERVER) //
 

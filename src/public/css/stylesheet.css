@@ -63,3 +63,58 @@ canvas {
   position: absolute;
   line-height: 13px;
 }
+
+.player-info {
+  position: absolute;
+  width: 40px;
+  top: 80%;
+  left: 46%;
+}
+
+.player-info h1 {
+  font-family: "Alata", sans-serif;
+  color: white;
+  text-shadow: -1px -1px 0 #000000,
+    1px -1px 0 #000000,
+    -1px 1px 0 #000000,
+    1px 1px 0 #000000,
+    -2px 0 0 #000000,
+    2px 0 0 #000000,
+    0 2px 0 #000000,
+    0 -2px 0 #000000;
+}
+
+#score-bar {
+  width: 300px;
+  background-color: gray;
+  position: absolute;
+  border-radius: 10px;
+  border: 2px black solid;
+  right: -170px;
+  bottom: 5px;
+}
+
+#score-inner {
+  width: 100%;
+  background-color: lightgreen;
+  height: 15px;
+  border-radius: 5px;
+}
+
+#score-text {
+  font-family: "Alata", sans-serif;
+  color: white;
+  text-shadow: -1px -1px 0 #000000,
+    1px -1px 0 #000000,
+    -1px 1px 0 #000000,
+    1px 1px 0 #000000,
+    -2px 0 0 #000000,
+    2px 0 0 #000000,
+    0 2px 0 #000000,
+    0 -2px 0 #000000;
+  text-align: center;
+  width: 100%;
+  margin: 0;
+  position: absolute;
+  line-height: 13px;
+}
