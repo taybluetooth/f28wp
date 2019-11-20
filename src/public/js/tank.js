@@ -88,19 +88,18 @@ Tank.prototype.updatePosition = function(p) {
 };
 
 Tank.prototype.fire = function() {
-  if(this.arena.pressedKeys.space) {
-    var bullet = new Bullet(this.arena, this, this.position.x, this.position.y, this.rotation);
-    this.bullets.push(bullet);
-  }
+  this.bullets.push(new Bullet(this.arena, this, this.position.x, this.position.y, this.rotation));
+};
+
+Tank.prototype.fired = function() {
   this.bullets.forEach(function(bullet) {
     bullet.update();
     bullet.render();
   });
-  //this.bullets.pop();
-};
+}
 
 Tank.prototype.levelUp = function() {
-  if(this.exp === this.level * 100) {
+  if(this.exp >= this.level * 100) {
     this.level += 1;
     this.exp = 0;
   }

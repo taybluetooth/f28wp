@@ -6,13 +6,13 @@ function Game() {
   this.camera = new Camera(this.ctx);
   this.width;
   this.height;
+  this.trigger = false;
 
   this.keymap = {
     68: 'right',
     65: 'left',
     87: 'up',
     83: 'down',
-    32: 'space'
   };
 
   this.pressedKeys = {
@@ -20,7 +20,6 @@ function Game() {
     right: false,
     up: false,
     down: false,
-    space: false
   };
 }
 
@@ -32,7 +31,7 @@ Game.prototype.resize = function() {
 }
 
 Game.prototype.initFood = function() {
-  for(i = 0; i < 1000; i++) {
+  for (i = 0; i < 2000; i++) {
     var x = this.randomInt(3000);
     var y = this.randomInt(3000);
     this.gameFood.push(new Food(this, x, y, this.colour()));
@@ -50,7 +49,7 @@ Game.prototype.initSocket = function() {
 
 Game.prototype.loadImg = function(name) {
   var img = new Image()
-  img.src = "/assets/images/"+name+".png"
+  img.src = "/assets/images/" + name + ".png"
   return img;
 }
 
@@ -66,10 +65,10 @@ Game.prototype.update = function(progress) {
     tank.updateRotation(p);
     tank.updateMovement(p);
     tank.updatePosition(p);
-    tank.fire();
+    tank.fired();
     Game.prototype.checkCollision(tank);
 
-    if(tank.local) {
+    if (tank.local) {
       // Calculate percentage of exp gained thus far by player.
       var totalExp = tank.exp / (tank.level * 100) * 100;
       document.getElementById('level-text').innerHTML = "Level " + tank.levelUp();
@@ -101,26 +100,38 @@ Game.prototype.initPlayers = function() {
 
 Game.prototype.checkCollision = function(tank) {
   game.gameFood.forEach(function(food) {
-      if(food.position.x > tank.position.x &&
-         food.position.x < tank.position.x + tank.width / 2 &&
-         food.position.y > tank.position.y &&
-         food.position.y < tank.position.y + tank.height / 2)
-      {
-        var index = game.gameFood.indexOf(food);
-        tank.expUp(food.exp);
-        game.gameFood.splice(index, 1);
-      }
+    if (food.position.x > tank.position.x &&
+      food.position.x < tank.position.x + tank.width / 2 &&
+      food.position.y > tank.position.y &&
+      food.position.y < tank.position.y + tank.height / 2) {
+      var index = game.gameFood.indexOf(food);
+      tank.expUp(food.exp);
+      game.gameFood.splice(index, 1);
+    }
   });
 }
 
 Game.prototype.keydown = function(event) {
   var keyCode = event.keyCode;
-  game.pressedKeys[game.keymap[keyCode]] = true;
+  if(keyCode != 32) {
+    game.pressedKeys[game.keymap[keyCode]] = true;
+  }
+  else {
+    if(this.trigger == false) {
+      game.tanks.forEach(function(tank) {
+        if(tank.local) {
+          tank.fire()
+          this.trigger = true;
+        }
+      });
+    }
+  }
 };
 
 Game.prototype.keyup = function(event) {
   var keyCode = event.keyCode;
   game.pressedKeys[game.keymap[keyCode]] = false;
+  this.trigger = false;
 };
 
 Game.prototype.colour = function() {
@@ -163,3 +174,4 @@ game.resize();
 
 window.addEventListener("keydown", game.keydown, false);
 window.addEventListener("keyup", game.keyup, false);
+window.addEventListener("keypress", game.keypress, false);
