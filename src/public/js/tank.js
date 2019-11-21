@@ -20,9 +20,10 @@ function Tank(arena, ctx, name, id, local, x, y, hp){
 };
 
 Tank.prototype.info = function() {
-  this.ctx.strokeStyle = "black";
+  this.ctx.fillStyle="#000000";
+  this.ctx.fillRect(this.position.x-(this.width/2), this.position.y + 25, 50 , 3);
   this.ctx.fillStyle="#00FF00";
-  this.ctx.fillRect(this.position.x-(this.width/2), this.position.y + 25,50,3);
+  this.ctx.fillRect(this.position.x-(this.width/2), this.position.y + 25, this.hp , 3);
 }
 
 Tank.prototype.render = function() {
@@ -117,4 +118,20 @@ Tank.prototype.increaseScore = function(val) {
 
 Tank.prototype.expUp = function(amount) {
     this.exp += amount;
+}
+
+Tank.prototype.hurt = function(damage) {
+  this.hp -= damage;
+}
+
+Tank.prototype.checkAlive = function() {
+  var alive;
+
+  if(this.hp <= 0) {
+    alive = false;
+  }
+  else {
+    alive = true;
+  }
+  return alive;
 }

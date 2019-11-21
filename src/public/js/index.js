@@ -46,8 +46,11 @@ Game.prototype.initFood = function() {
 }
 
 Game.prototype.initTank = function() {
-  var tank = new Tank(this, this.ctx, "Callum", 1, true, 400, 400, 100);
+  var tank = new Tank(this, this.ctx, "Callum", 1, true, 400, 400, 50);
+  var tank2 = new Tank(this, this.ctx, "Fraser", 2, false, 200, 200, 50);
+
   this.tanks.push(tank);
+  this.tanks.push(tank2);
 };
 
 Game.prototype.initSocket = function() {
@@ -68,21 +71,27 @@ Game.prototype.update = function(progress) {
   this.ctx.fillRect(-3000, -3000, 3000, 3000);
 
   this.tanks.forEach(function(tank) {
-    tank.render();
-    tank.updateRotation(p);
-    tank.updateMovement(p);
-    tank.updatePosition(p);
-    tank.fired();
-    Game.prototype.checkCollision(tank);
 
-    if (tank.local) {
+    if(tank.checkAlive()) {
+      tank.render();
+      tank.updateRotation(p);
+      tank.updateMovement(p);
+      tank.updatePosition(p);
+      tank.fired();
+      Game.prototype.checkFood(tank);
+      if(tank.id != 1) {
+        Game.prototype.checkBullet(game.getTank(1), tank);
+      }
+    }
+
+    if (tank === game.getTank(1)) {
       // Calculate percentage of exp gained thus far by player.
       var totalExp = tank.exp / (tank.level * 100) * 100;
       document.getElementById('level-text').innerHTML = "Level " + tank.levelUp();
       document.getElementById('score-text').innerHTML = "Score " + tank.getScore();
       document.getElementById('inner-bar').style.width = totalExp + "%";
-
     }
+
   });
 
   this.gameFood.forEach(function(food) {
@@ -107,16 +116,44 @@ Game.prototype.initPlayers = function() {
   });
 };
 
-Game.prototype.checkCollision = function(tank) {
+Game.prototype.getTank = function(id) {
+  var value;
+  this.tanks.forEach(function(tank) {
+    if(tank.id == id) {
+      value = tank;
+    }
+  });
+  return value;
+}
+
+Game.prototype.checkFood = function(tank) {
+
   game.gameFood.forEach(function(food) {
     if (food.position.x > tank.position.x &&
-      food.position.x < tank.position.x + tank.width / 2 &&
-      food.position.y > tank.position.y &&
-      food.position.y < tank.position.y + tank.height / 2) {
-      var index = game.gameFood.indexOf(food);
-      tank.expUp(food.exp);
-      tank.increaseScore(food.score);
-      game.gameFood.splice(index, 1);
+        food.position.x < tank.position.x + tank.width / 2 &&
+        food.position.y > tank.position.y &&
+        food.position.y < tank.position.y + tank.height / 2) {
+          var index = game.gameFood.indexOf(food);
+          tank.expUp(food.exp);
+          tank.increaseScore(food.score);
+          game.gameFood.splice(index, 1);
+    }
+  });
+
+}
+
+Game.prototype.checkBullet = function(tank1, tank2) {
+
+  tank1.bullets.forEach(function(bullet) {
+    if(bullet.position.x > tank2.position.x &&
+       bullet.position.x < tank2.position.x + tank2.width / 2 &&
+       bullet.position.y > tank2.position.y &&
+       bullet.position.y < tank2.position.y + tank2.height / 2) {
+         var index = tank1.bullets.indexOf(bullet);
+         tank2.hurt(tank1.damage);
+         tank1.increaseScore(100 * tank2.level);
+         tank1.expUp(100 * tank2.level);
+         tank1.bullets.splice(index, 1);
     }
   });
 }
