@@ -117,6 +117,10 @@ html, body {
     font-size: 60px;
 }
 
+.nav-image {
+  width: 40%;
+}
+
 canvas {
   background: #000011;
   height: 100%;
