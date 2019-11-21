@@ -39,10 +39,10 @@ Tank.prototype.updateRotation = function(p) {
 
   if(this.local) {
     if (this.arena.pressedKeys.left) {
-      this.rotation -= p / 5
+      this.rotation -= p / 3
     }
     else if (this.arena.pressedKeys.right) {
-      this.rotation += p / 5
+      this.rotation += p / 3
     }
   }
 }
