@@ -1,142 +1,188 @@
-var canvas = document.getElementById("canvas")
-var ctx = canvas.getContext("2d")
-var camera = new Camera(ctx);
-var width
-var height
+function Game() {
+  this.tanks = [];
+  this.gameFood = [];
+  this.canvas = document.getElementById("canvas")
+  this.ctx = this.canvas.getContext("2d")
+  this.camera = new Camera(this.ctx);
+  this.width;
+  this.height;
+  this.trigger = false;
 
-var resize = function() {
-  width = window.innerWidth * 2
-  height = window.innerHeight * 2
-  canvas.width = width
-  canvas.height = height
-}
-window.onresize = resize
-resize()
+  this.keymap = {
+    68: 'right',
+    65: 'left',
+    87: 'up',
+    83: 'down',
+  };
 
-var state = {
-  position: {
-    x: (width / 2),
-    y: (height / 2)
-  },
-  movement: {
-    x: 0,
-    y: 0
-  },
-  rotation: 0,
-  pressedKeys: {
+  this.pressedKeys = {
     left: false,
     right: false,
     up: false,
-    down: false
+    down: false,
+  };
+}
+
+Game.prototype.music = function() {
+  var audio = new Audio('/assets/music/Gameplay.mp3');
+  audio.loop = true;
+  audio.volume = 0.2;
+  audio.play();
+}
+
+Game.prototype.resize = function() {
+  this.width = window.innerWidth * 2
+  this.height = window.innerHeight * 2
+  this.canvas.width = this.width
+  this.canvas.height = this.height
+}
+
+Game.prototype.initFood = function() {
+  for (i = 0; i < 2000; i++) {
+    var x = this.randomInt(3000);
+    var y = this.randomInt(3000);
+    this.gameFood.push(new Food(this, x, y, this.colour()));
   }
 }
 
-function background() {
-  var img = new Image()
-  img.src = "/assets/images/background.png"
-  var ptrn = ctx.createPattern(img, 'repeat')
-  return ptrn;
-}
+Game.prototype.initTank = function() {
+  var tank = new Tank(this, this.ctx, "Callum", 1, true, 400, 400, 100);
+  this.tanks.push(tank);
+};
 
-function loadImg(name) {
+Game.prototype.initSocket = function() {
+  return 0;
+};
+
+Game.prototype.loadImg = function(name) {
   var img = new Image()
-  img.src = "/assets/images/"+name+".png"
+  img.src = "/assets/images/" + name + ".png"
   return img;
 }
 
-function update(progress) {
-  var p = progress * 3
+Game.prototype.update = function(progress) {
+  var p = progress;
+  this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+  this.camera.begin();
+  this.ctx.fillStyle = "#ffffff";
+  this.ctx.fillRect(-3000, -3000, 3000, 3000);
 
-  updateRotation(p)
-  updateMovement(p)
-  updatePosition(p)
+  this.tanks.forEach(function(tank) {
+    tank.render();
+    tank.updateRotation(p);
+    tank.updateMovement(p);
+    tank.updatePosition(p);
+    tank.fired();
+    Game.prototype.checkCollision(tank);
 
-  camera.moveTo(state.position.x, state.position.y)
-}
+    if (tank.local) {
+      // Calculate percentage of exp gained thus far by player.
+      var totalExp = tank.exp / (tank.level * 100) * 100;
+      document.getElementById('level-text').innerHTML = "Level " + tank.levelUp();
+      document.getElementById('score-text').innerHTML = "Score " + tank.getScore();
+      document.getElementById('inner-bar').style.width = totalExp + "%";
 
-function updateRotation(p) {
-  if (state.pressedKeys.left) {
-    state.rotation -= p / 5
-  }
-  else if (state.pressedKeys.right) {
-    state.rotation += p / 5
-  }
-}
+    }
+  });
 
-function updateMovement(p) {
+  this.gameFood.forEach(function(food) {
+    food.render();
+    food.update();
+  });
 
-  var accelerationVector = {
-    x: p * 0.2 * Math.cos((state.rotation-90) * (Math.PI/180)),
-    y: p * 0.2 * Math.sin((state.rotation-90) * (Math.PI/180))
-  }
-
-  if (state.pressedKeys.up) {
-    state.position.x += accelerationVector.x
-    state.position.y += accelerationVector.y
-  }
-  else if (state.pressedKeys.down) {
-    state.position.x -= accelerationVector.x
-    state.position.y -= accelerationVector.y
-  }
+  this.camera.moveTo(this.tanks[0].position.x, this.tanks[0].position.y)
+  this.camera.end();
 
 }
 
-function updatePosition(p) {
+Game.prototype.initMap = function() {
+  var img = new Image()
+  img.src = "/assets/images/background.png"
+  this.ctx.createPattern(img, 'repeat');
+};
 
-  // Detect boundaries
-  if (state.position.x > width-40) {
-    state.position.x -= p/5
-  }
-  else if (state.position.x < 40) {
-    state.position.x += p/5
-  }
-  if (state.position.y > height-40) {
-    state.position.y -= p/5
-  }
-  else if (state.position.y < 40) {
-    state.position.y += p/5
-  }
+Game.prototype.initPlayers = function() {
+  this.tanks.forEach(function(tank) {
+    tank.render();
+  });
+};
+
+Game.prototype.checkCollision = function(tank) {
+  game.gameFood.forEach(function(food) {
+    if (food.position.x > tank.position.x &&
+      food.position.x < tank.position.x + tank.width / 2 &&
+      food.position.y > tank.position.y &&
+      food.position.y < tank.position.y + tank.height / 2) {
+      var index = game.gameFood.indexOf(food);
+      tank.expUp(food.exp);
+      tank.increaseScore(food.score);
+      game.gameFood.splice(index, 1);
+    }
+  });
 }
 
-function draw() {
-  ctx.clearRect(0, 0, width, height)
-  camera.begin()
-  ctx.fillStyle = background()
-  ctx.fillRect(-500, -500, 10000, 10000)
-  ctx.save();
-  ctx.translate(state.position.x, state.position.y)
-  ctx.rotate((Math.PI/180) * state.rotation)
-  ctx.drawImage(loadImg('tank'), 0, 0, 40, 40)
-  ctx.restore()
-  camera.end();
+Game.prototype.keydown = function(event) {
+  var keyCode = event.keyCode;
+  if(keyCode != 32) {
+    game.pressedKeys[game.keymap[keyCode]] = true;
+  }
+  else {
+    if(this.trigger == false) {
+      game.tanks.forEach(function(tank) {
+        if(tank.local) {
+          tank.fire()
+          this.trigger = true;
+        }
+      });
+    }
+  }
+};
+
+Game.prototype.keyup = function(event) {
+  var keyCode = event.keyCode;
+  game.pressedKeys[game.keymap[keyCode]] = false;
+  this.trigger = false;
+};
+
+Game.prototype.colour = function() {
+  var letters = '0123456789ABCDEF';
+  var colour = '#';
+  for (var i = 0; i < 6; i++) {
+    colour += letters[Math.floor(Math.random() * 16)];
+  }
+  return colour;
 }
+
+Game.prototype.randomInt = function(max) {
+  return Math.floor(Math.random() * Math.floor(max));
+}
+
+var game = new Game();
+game.initMap();
+game.initFood();
+game.initTank();
+game.initPlayers();
+game.music();
+
+// CLIENT GAME LOOP (TO BE ALTERED TO WORK ON SERVER) //
 
 function loop(timestamp) {
-  var progress = timestamp - lastRender
+  var progress = timestamp - lastRender;
 
-  update(progress)
-  draw()
+  game.update(progress);
 
-  lastRender = timestamp
-  window.requestAnimationFrame(loop)
-}
+  lastRender = timestamp;
+  window.requestAnimationFrame(loop);
+};
+
 var lastRender = 0
 window.requestAnimationFrame(loop)
 
-var keyMap = {
-  68: 'right',
-  65: 'left',
-  87: 'up',
-  83: 'down'
-}
-function keydown(event) {
-  var key = keyMap[event.keyCode]
-  state.pressedKeys[key] = true
-}
-function keyup(event) {
-  var key = keyMap[event.keyCode]
-  state.pressedKeys[key] = false
-}
+window.onresize = game.resize;
+game.resize();
 
-window.addEventListener("keydown", keydown, false)
-window.addEventListener("keyup", keyup, false)
+// EVENT HANDLERS //
+
+window.addEventListener("keydown", game.keydown, false);
+window.addEventListener("keyup", game.keyup, false);
+window.addEventListener("keypress", game.keypress, false);
