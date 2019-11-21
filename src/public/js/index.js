@@ -67,7 +67,7 @@ Game.prototype.update = function(progress) {
   var p = progress;
   this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
   this.camera.begin();
-  this.ctx.fillStyle = "#36454f";
+  this.ctx.fillStyle = "#000022";
   this.ctx.fillRect(-2, -2, 3000, 3000);
 
   this.tanks.forEach(function(tank) {

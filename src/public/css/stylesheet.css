@@ -4,7 +4,7 @@ html, body {
 }
 
 canvas {
-  background: #222222;
+  background: #111111;
   height: 100%;
   width: 100%;
   display: block
@@ -173,4 +173,47 @@ canvas {
     position: absolute;
     line-height: 12px;
     font-size: 12px !important;
+}
+
+#leaderboard {
+  position: absolute;
+  left: 84%;
+  top: 3%;
+  width: 15%;
+  font-family: 'Alata', sans-serif;
+  color: white;
+  border-radius: 10px;
+  overflow: auto;
+}
+
+#leaderboard-table {
+  background-color: grey;
+  border-spacing: 0;
+  text-align: center;
+  width: 100%;
+  opacity: 0.7;
+}
+
+#table-head {
+  background-color: #111111;
+}
+
+#player1-head {
+  background-color: #222222;
+}
+
+#player2-head {
+  background-color: #444444;
+}
+
+#player3-head {
+  background-color: #222222;
+}
+
+#player4-head {
+  background-color: #444444;
+}
+
+#player5-head {
+  background-color: #222222;
 }
