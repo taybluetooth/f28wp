@@ -75,17 +75,17 @@ Tank.prototype.updatePosition = function(p) {
   }
 
   // Detect boundaries
-  if (this.position.x > 3000) {
+  if (this.position.x > 2990) {
     this.position.x -= accelerationVector.x;
   }
-  else if (this.position.x < -3000) {
-    this.position.x += accelerationVector.x;
+  else if (this.position.x < 10) {
+    this.position.x -= accelerationVector.x;
   }
-  if (this.position.y > 3000) {
+  if (this.position.y > 2980) {
     this.position.y -= accelerationVector.y;
   }
-  else if (this.position.y < -3000) {
-    this.position.y += accelerationVector.y;
+  else if (this.position.y < 10) {
+    this.position.y -= accelerationVector.y;
   }
 };
 

@@ -4,7 +4,7 @@ html, body {
 }
 
 canvas {
-  background: #ffffff;
+  background: #222222;
   height: 100%;
   width: 100%;
   display: block
@@ -42,11 +42,11 @@ canvas {
 #level-bar #inner-bar {
   width: 0%;
   background-color: yellow;
-  height: 15px;
   border-radius: 5px;
+  height: 15px;
 }
 
-#level-text {
+.progress-text {
   font-family: "Alata", sans-serif;
   color: white;
   text-shadow: -1px -1px 0 #000000,
@@ -96,12 +96,67 @@ canvas {
 
 #score-inner {
   width: 100%;
+  background-color: violet;
+  height: 15px;
+  border-radius: 5px;
+}
+
+#player-upgrades {
+  position: absolute;
+  width: 200px;
+  top: 85%;
+  left: 1%;
+}
+
+#upgrade-health {
+  width: 90%;
+  background-color: grey;
+  position: absolute;
+  border-radius: 10px;
+  border: 2px black solid;
+  bottom: 0.2em;
+}
+
+#inner-health-bar {
+  width: 40%;
   background-color: lightgreen;
   height: 15px;
   border-radius: 5px;
 }
 
-#score-text {
+#upgrade-tank-speed {
+  width: 90%;
+  background-color: grey;
+  position: absolute;
+  border-radius: 10px;
+  border: 2px black solid;
+  top: 0.2em;
+}
+
+#inner-tank-speed-bar {
+  width: 20%;
+  background-color: lightblue;
+  height: 15px;
+  border-radius: 5px;
+}
+
+#upgrade-bullet-damage {
+  width: 90%;
+  background-color: grey;
+  position: absolute;
+  border-radius: 10px;
+  border: 2px black solid;
+  top: 1.7em;
+}
+
+#inner-bullet-damage-bar {
+  width: 10%;
+  background-color: red;
+  height: 15px;
+  border-radius: 5px;
+}
+
+.upgrade-text {
   font-family: "Alata", sans-serif;
   color: white;
   text-shadow: -1px -1px 0 #000000,
@@ -112,9 +167,10 @@ canvas {
     2px 0 0 #000000,
     0 2px 0 #000000,
     0 -2px 0 #000000;
-  text-align: center;
-  width: 100%;
-  margin: 0;
-  position: absolute;
-  line-height: 13px;
+    text-align: center;
+    width: 100%;
+    margin: 0;
+    position: absolute;
+    line-height: 12px;
+    font-size: 12px !important;
 }

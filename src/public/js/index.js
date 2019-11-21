@@ -39,14 +39,14 @@ Game.prototype.resize = function() {
 
 Game.prototype.initFood = function() {
   for (i = 0; i < 2000; i++) {
-    var x = this.randomInt(3000);
-    var y = this.randomInt(3000);
+    var x = this.randomInt(2998);
+    var y = this.randomInt(2998);
     this.gameFood.push(new Food(this, x, y, this.colour()));
   }
 }
 
 Game.prototype.initTank = function() {
-  var tank = new Tank(this, this.ctx, "Callum", 1, true, 400, 400, 50);
+  var tank = new Tank(this, this.ctx, "Callum", 1, true, 2800, 2800, 50);
   var tank2 = new Tank(this, this.ctx, "Fraser", 2, false, 200, 200, 50);
 
   this.tanks.push(tank);
@@ -67,8 +67,8 @@ Game.prototype.update = function(progress) {
   var p = progress;
   this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
   this.camera.begin();
-  this.ctx.fillStyle = "#ffffff";
-  this.ctx.fillRect(-3000, -3000, 3000, 3000);
+  this.ctx.fillStyle = "#36454f";
+  this.ctx.fillRect(-2, -2, 3000, 3000);
 
   this.tanks.forEach(function(tank) {
 
