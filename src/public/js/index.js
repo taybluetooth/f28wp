@@ -39,8 +39,8 @@ Game.prototype.resize = function() {
 
 Game.prototype.initFood = function() {
   for (i = 0; i < 2000; i++) {
-    var x = this.randomInt(2998);
-    var y = this.randomInt(2998);
+    var x = this.randomInt(2800);
+    var y = this.randomInt(2800);
     this.gameFood.push(new Food(this, x, y, this.colour()));
   }
 }

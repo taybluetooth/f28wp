@@ -75,7 +75,7 @@ Tank.prototype.updatePosition = function(p) {
   }
 
   // Detect boundaries
-  if (this.position.x > 2990) {
+  if (this.position.x > 2980) {
     this.position.x -= accelerationVector.x;
   }
   else if (this.position.x < 10) {

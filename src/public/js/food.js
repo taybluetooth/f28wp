@@ -36,20 +36,20 @@ Food.prototype.updatePosition = function() {
   }
 
   // Detect boundaries
-  if (this.position.x > 2998) {
-    this.rotation = -this.arena.randomInt(360);
+  if (this.position.x > 2990) {
+    this.rotation = -90;
     this.position.x += accelerationVector.x;
   }
   else if (this.position.x < 1) {
-    this.rotation = -this.arena.randomInt(360);
+    this.rotation = 90;
     this.position.x -= accelerationVector.x;
   }
-  if (this.position.y > 2995) {
-    this.rotation = -this.arena.randomInt(360);
+  if (this.position.y > 2990) {
+    this.rotation = 0;
     this.position.y += accelerationVector.y;
   }
   else if (this.position.y < 1) {
-    this.rotation = -this.arena.randomInt(360);
+    this.rotation = 180;
     this.position.y -= accelerationVector.y;
   }
 };
