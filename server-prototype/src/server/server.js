@@ -15,7 +15,3 @@ app.get('/', function(req, res) {
 
 server.listen(process.env.port || 3000);
 console.log('BEST BOY TANK LISTENING ON PORT 3000');
-
-function joinGame(username) {
-  game.addPlayer(this, username);
-}
