@@ -17,6 +17,11 @@ function Tank(arena, ctx, name, id, local, x, y, hp){
   this.level = 1;
   this.bullets = [];
   this.score = 0;
+  this.upgrade = {
+    speed: 0,
+    health: 0,
+    damage: 0
+  }
 };
 
 Tank.prototype.info = function() {

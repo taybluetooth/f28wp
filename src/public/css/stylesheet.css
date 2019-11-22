@@ -118,7 +118,8 @@ html, body {
 }
 
 .nav-image {
-  width: 40%;
+  width: 20%;
+  position: relative;
 }
 
 canvas {
