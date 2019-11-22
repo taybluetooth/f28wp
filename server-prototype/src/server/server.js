@@ -43,7 +43,7 @@ const Game = require('./game');
 const game = new Game();
 
 function joinGame(username) {
-  game.addPlayer(this, username);
+  game.addTank(this, username);
 }
 
 function handleInput(dir) {
@@ -51,5 +51,5 @@ function handleInput(dir) {
 }
 
 function onDisconnect() {
-  game.removePlayer(this);
+  game.removeTank(this);
 }

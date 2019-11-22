@@ -1,5 +1,5 @@
 const Constants = require('../shared/constants');
-const Player = require('./player');
+const Tank = require('./tank');
 
 class Game {
   constructor() {
@@ -11,18 +11,18 @@ class Game {
     setInterval(this.update.bind(this), 1000 / 60);
   }
 
-  addPlayer(socket, username) {
+  addTank(socket, username) {
     this.sockets[socket.id] = socket;
 
-    // Generate a position to start this player at.
+    // Generate a position to start this tank at.
     const x = Constants.MAP_SIZE * (0.25 + Math.random() * 0.5);
     const y = Constants.MAP_SIZE * (0.25 + Math.random() * 0.5);
     this.tanks[socket.id] = new Tank(socket.id, username, x, y);
   }
 
-  removePlayer(socket) {
+  removeTank(socket) {
     delete this.sockets[socket.id];
-    delete this.players[socket.id];
+    delete this.tanks[socket.id];
   }
 
   update() {
@@ -43,48 +43,48 @@ class Game {
       bullet => !bulletsToRemove.includes(bullet),
     );
 
-    // Update each player
-    Object.keys(this.sockets).forEach(playerID => {
-      const player = this.players[playerID];
-      const newBullet = player.update(dt);
+    // Update each tank
+    Object.keys(this.sockets).forEach(tankID => {
+      const tank = this.tanks[tankID];
+      const newBullet = tank.update(dt);
       if (newBullet) {
         this.bullets.push(newBullet);
       }
     });
 
-    // Apply collisions, give players score for hitting bullets
+    // Apply collisions, give tanks score for hitting bullets
     const destroyedBullets = applyCollisions(
-      Object.values(this.players),
+      Object.values(this.tanks),
       this.bullets,
     );
     destroyedBullets.forEach(b => {
-      if (this.players[b.parentID]) {
-        this.players[b.parentID].onDealtDamage();
+      if (this.tanks[b.parentID]) {
+        this.tanks[b.parentID].onDealtDamage();
       }
     });
     this.bullets = this.bullets.filter(
       bullet => !destroyedBullets.includes(bullet),
     );
 
-    // Check if any players are dead
-    Object.keys(this.sockets).forEach(playerID => {
-      const socket = this.sockets[playerID];
-      const player = this.players[playerID];
-      if (player.hp <= 0) {
+    // Check if any tanks are dead
+    Object.keys(this.sockets).forEach(tankID => {
+      const socket = this.sockets[tankID];
+      const tank = this.tanks[tankID];
+      if (tank.hp <= 0) {
         socket.emit(Constants.MSG_TYPES.GAME_OVER);
-        this.removePlayer(socket);
+        this.removetank(socket);
       }
     });
 
-    // Send a game update to each player every other time
+    // Send a game update to each tank every other time
     if (this.shouldSendUpdate) {
       const leaderboard = this.getLeaderboard();
-      Object.keys(this.sockets).forEach(playerID => {
-        const socket = this.sockets[playerID];
-        const player = this.players[playerID];
+      Object.keys(this.sockets).forEach(tankID => {
+        const socket = this.sockets[tankID];
+        const tank = this.tanks[tankID];
         socket.emit(
           Constants.MSG_TYPES.GAME_UPDATE,
-          this.createUpdate(player, leaderboard),
+          this.createUpdate(tank, leaderboard),
         );
       });
       this.shouldSendUpdate = false;
@@ -94,27 +94,26 @@ class Game {
   }
 
   getLeaderboard() {
-   return Object.values(this.players)
+   return Object.values(this.tanks)
      .sort((p1, p2) => p2.score - p1.score)
      .slice(0, 5)
      .map(p => ({ username: p.username, score: Math.round(p.score) }));
   }
 
-  createUpdate(player, leaderboard) {
-    const nearbyPlayers = Object.values(this.players).filter(
-     p => p !== player && p.distanceTo(player) <= Constants.MAP_SIZE / 2,
+  createUpdate(tank, leaderboard) {
+    const nearbytanks = Object.values(this.tanks).filter(
+     p => p !== tank && p.distanceTo(tank) <= Constants.MAP_SIZE / 2,
     );
     const nearbyBullets = this.bullets.filter(
-     b => b.distanceTo(player) <= Constants.MAP_SIZE / 2,
+     b => b.distanceTo(tank) <= Constants.MAP_SIZE / 2,
     );
 
     return {
      t: Date.now(),
-     me: player.serializeForUpdate(),
-     others: nearbyPlayers.map(p => p.serializeForUpdate()),
+     me: tank.serializeForUpdate(),
+     others: nearbytanks.map(p => p.serializeForUpdate()),
      bullets: nearbyBullets.map(b => b.serializeForUpdate()),
      leaderboard,
     };
   }
-}
 }
