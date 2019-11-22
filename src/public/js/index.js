@@ -168,6 +168,7 @@ Game.prototype.keydown = function(event) {
       game.tanks.forEach(function(tank) {
         if(tank.local) {
           tank.fire()
+
           this.trigger = true;
         }
       });

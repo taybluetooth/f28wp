@@ -95,8 +95,14 @@ Tank.prototype.updatePosition = function(p) {
   }
 };
 
+Tank.prototype.sound = function() {
+  var shot = new Audio('/assets/music/shot.mp3');
+  shot.volume = 1.0;
+  shot.play();
+}
+
 Tank.prototype.fire = function() {
-  //this.sound()
+  sound()
   this.bullets.push(new Bullet(this.arena, this, this.position.x, this.position.y, this.rotation));
 
 
@@ -104,7 +110,6 @@ Tank.prototype.fire = function() {
 
 Tank.prototype.fired = function() {
   this.bullets.forEach(function(bullet) {
-
     bullet.update();
     bullet.render();
   });
@@ -144,10 +149,4 @@ Tank.prototype.checkAlive = function() {
     alive = true;
   }
   return alive;
-}
-
-Tank.prototype.sound = function() {
-  var shot = new Audio('/assets/music/shot.mp3');
-  shot.volume = 1;
-  shot.Play();
 }
