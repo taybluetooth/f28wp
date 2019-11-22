@@ -22,6 +22,7 @@ function Tank(arena, ctx, name, id, local, x, y, hp){
     health: 0,
     damage: 0
   }
+
 };
 
 Tank.prototype.info = function() {
@@ -95,11 +96,15 @@ Tank.prototype.updatePosition = function(p) {
 };
 
 Tank.prototype.fire = function() {
+  //this.sound()
   this.bullets.push(new Bullet(this.arena, this, this.position.x, this.position.y, this.rotation));
+
+
 };
 
 Tank.prototype.fired = function() {
   this.bullets.forEach(function(bullet) {
+
     bullet.update();
     bullet.render();
   });
@@ -139,4 +144,10 @@ Tank.prototype.checkAlive = function() {
     alive = true;
   }
   return alive;
+}
+
+Tank.prototype.sound = function() {
+  var shot = new Audio('/assets/music/shot.mp3');
+  shot.volume = 1;
+  shot.Play();
 }

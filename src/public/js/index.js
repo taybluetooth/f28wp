@@ -26,7 +26,7 @@ function Game() {
 Game.prototype.music = function() {
   var audio = new Audio('/assets/music/Gameplay.mp3');
   audio.loop = true;
-  audio.volume = 0.2;
+  audio.volume = 0.3;
   audio.play();
 }
 
