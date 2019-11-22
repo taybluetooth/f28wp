@@ -1,0 +1,31 @@
+{
+  "name": "best-boy-tank",
+  "version": "1.0.0",
+  "description": "Tank game",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/taybluetooth/f28wp.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/taybluetooth/f28wp/issues"
+  },
+  "homepage": "https://github.com/taybluetooth/f28wp#readme",
+  "dependencies": {
+    "common.js": "^1.1.1",
+    "express": "^4.17.1",
+    "express.js": "^1.0.0",
+    "helmet": "^3.21.2",
+    "nunjucks": "^3.2.0",
+    "pixi.js": "^5.1.5",
+    "socket.io": "^2.3.0"
+  },
+  "devDependencies": {
+    "webpack": "^4.41.2"
+  }
+}
