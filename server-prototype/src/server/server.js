@@ -1,17 +1,57 @@
-const express = require('express')
-const app = express()
-const Game = require('/.game');
-const game = new Game();
-var path = require('path')
-var server = require('http').Server(game);
-var io = require('socket.io')(server, {});
-var socket_list = {}
+const express = require('express');
+const webpack = require('webpack');
+const webpackDevMiddleware = require('webpack-dev-middleware');
+const webpackConfig = require('../../webpack.dev.js');
 
-app.use('/client', express.static(__dirname + '/client'));
+// Setup an Express server
+const app = express();
+app.use(express.static('public'));
 
-app.get('/', function(req, res) {
-  res.sendFile(__dirname + '/client/html/index.html');
+if (process.env.NODE_ENV === 'development') {
+  // Setup Webpack for development
+  const compiler = webpack(webpackConfig);
+  app.use(webpackDevMiddleware(compiler));
+} else {
+  // Static serve the dist/ folder in production
+  app.use(express.static('dist'));
+}
+
+// Listen on port
+const port = process.env.PORT || 3000;
+const server = app.listen(port);
+console.log(`Server listening on port ${port}`);
+
+const socketio = require('socket.io');
+const Constants = require('../shared/constants');
+
+// Setup Express
+// ...
+const server = app.listen(port);console.log(`Server listening on port ${port}`);
+
+// Setup socket.io
+const io = socketio(server);
+// Listen for socket.io connections
+io.on('connection', socket => {
+  console.log('Player connected!', socket.id);
+
+  socket.on(Constants.MSG_TYPES.JOIN_GAME, joinGame);
+  socket.on(Constants.MSG_TYPES.INPUT, handleInput);
+  socket.on('disconnect', onDisconnect);
 });
 
-server.listen(process.env.port || 3000);
-console.log('BEST BOY TANK LISTENING ON PORT 3000');
+const Game = require('./game');
+
+// Setup the Game
+const game = new Game();
+
+function joinGame(username) {
+  game.addPlayer(this, username);
+}
+
+function handleInput(dir) {
+  game.handleInput(this, dir);
+}
+
+function onDisconnect() {
+  game.removePlayer(this);
+}

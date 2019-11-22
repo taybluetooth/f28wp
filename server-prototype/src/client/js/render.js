@@ -1,5 +1,5 @@
 import { getAsset } from './assets';
-import { getCurrentState } from './state';
+import { getState } from './game-state';
 
 const Constants = require('../shared/constants');
 const { PLAYER_RADIUS, PLAYER_MAX_HP, BULLET_RADIUS, MAP_SIZE } = Constants;
@@ -13,7 +13,7 @@ canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
 function render() {
-  const { me, others, bullets } = getCurrentState();
+  const { me, others, bullets } = getState();
   if (!me) {
     return;
   }

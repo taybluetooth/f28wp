@@ -1,31 +1,49 @@
 {
   "name": "best-boy-tank",
   "version": "1.0.0",
-  "description": "Tank game",
+  "description": "Top down tank game",
+  "main": "src/server/server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node index.js"
+    "build": "webpack --config webpack.prod.js",
+    "lint": "eslint --cache --ext .js,.jsx src/",
+    "develop": "cross-env NODE_ENV=development node src/server/server.js",
+    "start": "cross-env NODE_ENV=production node src/server/server.js"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/taybluetooth/f28wp.git"
   },
-  "author": "",
-  "license": "ISC",
   "bugs": {
     "url": "https://github.com/taybluetooth/f28wp/issues"
   },
+  "author": "Callum Taylor",
+  "license": "ISC",
   "homepage": "https://github.com/taybluetooth/f28wp#readme",
   "dependencies": {
-    "common.js": "^1.1.1",
-    "express": "^4.17.1",
-    "express.js": "^1.0.0",
-    "helmet": "^3.21.2",
-    "nunjucks": "^3.2.0",
-    "pixi.js": "^5.1.5",
-    "socket.io": "^2.3.0"
+    "bootstrap": "^4.3.1",
+    "express": "^4.16.4",
+    "html-webpack-plugin": "^3.2.0",
+    "lodash": "^4.17.11",
+    "shortid": "^2.2.14",
+    "socket.io": "^2.2.0",
+    "socket.io-client": "^2.2.0",
+    "throttle-debounce": "^2.1.0",
+    "webpack": "^4.30.0",
+    "webpack-dev-middleware": "^3.6.2"
   },
   "devDependencies": {
-    "webpack": "^4.41.2"
+    "@babel/core": "^7.4.3",
+    "@babel/preset-env": "^7.4.3",
+    "babel-eslint": "^10.0.1",
+    "babel-loader": "^8.0.5",
+    "cross-env": "^5.2.1",
+    "css-loader": "^2.1.1",
+    "eslint": "^5.16.0",
+    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint-plugin-import": "^2.17.2",
+    "mini-css-extract-plugin": "^0.6.0",
+    "optimize-css-assets-webpack-plugin": "^5.0.1",
+    "webpack-cli": "^3.3.0",
+    "webpack-merge": "^4.2.1"
   }
 }
