@@ -1,4 +1,4 @@
-const ObjectClass = require('./object');
+const ObjectClass = require('./main-object');
 const Bullet = require('./bullet');
 const Constants = require('../shared/constants');
 
