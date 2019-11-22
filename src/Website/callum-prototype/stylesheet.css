@@ -2,6 +2,7 @@ html, body {
     font-family: 'Alata', sans-serif;
     margin: 0;
     padding: 0;
+
 }
 
 @media screen and (max-width: 768px) {
@@ -42,13 +43,13 @@ html, body {
     display: flex;
     justify-content: center;
     padding: 30px 20px;
-    background-color: white;
+    background-color: 000033;
     flex-direction: row;
     z-index: 1;
 }
 
 .link {
-    color: black;
+    color: white;
     text-decoration: none;
     position: relative;
     margin: 0px 50px 0px 50px;
@@ -85,6 +86,11 @@ html, body {
     background-color: white;
     overflow-x: hidden;
     transition: 0.5s;
+}
+
+.nav-image {
+  width: 20%;
+  position: relative;
 }
 
 .overlay-content {
@@ -159,5 +165,5 @@ color: grey;
   margin-left: 10%;
   margin-right: 10%;
   margin-top: 5%;
-  background: #000
+  background: #151546
 }
