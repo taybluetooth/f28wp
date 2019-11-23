@@ -3,6 +3,7 @@ const Constants = require('../shared/constants');
 // Returns an array of bullets to be destroyed.
 function applyCollisions(tanks, bullets) {
   const destroyedBullets = [];
+  const destroyedFood = [];
   for (let i = 0; i < bullets.length; i++) {
     // Look for a tank (who didn't create the bullet) to collide each bullet with.
     // As soon as we find one, break out of the loop to prevent double counting a bullet.

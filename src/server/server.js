@@ -39,6 +39,7 @@ io.on('connection', socket => {
 
 // Setup the Game
 const game = new Game();
+game.addFood();
 
 function joinGame(username) {
   game.addTank(this, username);

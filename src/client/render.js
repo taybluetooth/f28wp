@@ -4,16 +4,14 @@ import { getCurrentState } from './state';
 
 const Constants = require('../shared/constants');
 
-const { TANK_RADIUS, TANK_MAX_HP, BULLET_RADIUS, MAP_SIZE } = Constants;
+const { TANK_RADIUS, TANK_MAX_HP, BULLET_RADIUS, FOOD_RADIUS, MAP_SIZE } = Constants;
 
-// Get the canvas graphics context
 const canvas = document.getElementById('game-canvas');
 const context = canvas.getContext('2d');
 setCanvasDimensions();
 
 function setCanvasDimensions() {
-  // On small screens (e.g. phones), we want to "zoom out" so players can still see at least
-  // 800 in-game units of width.
+  // Mobile Responsiveness
   const scaleRatio = Math.max(1, 800 / window.innerWidth);
   canvas.width = scaleRatio * window.innerWidth;
   canvas.height = scaleRatio * window.innerHeight;
@@ -22,7 +20,7 @@ function setCanvasDimensions() {
 window.addEventListener('resize', debounce(40, setCanvasDimensions));
 
 function render() {
-  const { me, others, bullets } = getCurrentState();
+  const { me, others, bullets, foods } = getCurrentState();
   if (!me) {
     return;
   }
@@ -31,16 +29,19 @@ function render() {
   renderBackground(me.x, me.y);
 
   // Draw boundaries
-  context.strokeStyle = 'black';
+  context.strokeStyle = 'white';
   context.lineWidth = 1;
   context.strokeRect(canvas.width / 2 - me.x, canvas.height / 2 - me.y, MAP_SIZE, MAP_SIZE);
 
   // Draw all bullets
   bullets.forEach(renderBullet.bind(null, me));
 
+  // Draw all food
+  foods.forEach(renderFood.bind(me));
+
   // Draw all players
   renderTank(me, me);
-  others.forEach(renderPlayer.bind(null, me));
+  others.forEach(renderTank.bind(null, me));
 }
 
 function renderBackground(x, y) {
@@ -97,11 +98,31 @@ function renderBullet(me, bullet) {
   );
 }
 
+function renderFood(food) {
+  const { x, y } = food;
+  context.fillStyle = renderColour();
+  context.fillRect (
+    canvas.width / 2 + x - FOOD_RADIUS,
+    canvas.height / 2 + y - FOOD_RADIUS,
+    FOOD_RADIUS * 2,
+    FOOD_RADIUS * 2,
+  )
+}
+
 function renderMainMenu() {
   const t = Date.now() / 7500;
   const x = MAP_SIZE / 2 + 800 * Math.cos(t);
   const y = MAP_SIZE / 2 + 800 * Math.sin(t);
   renderBackground(x, y);
+}
+
+function renderColour() {
+  var letters = '0123456789ABCDEF';
+  var colour = '#';
+  for (var i = 0; i < 6; i++) {
+    colour += letters[Math.floor(Math.random() * 16)];
+  }
+  return colour;
 }
 
 let renderInterval = setInterval(renderMainMenu, 1000 / 60);
