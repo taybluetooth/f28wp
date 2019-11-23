@@ -96,13 +96,13 @@ Tank.prototype.updatePosition = function(p) {
 };
 
 Tank.prototype.sound = function() {
-  var shot = new Audio('/assets/music/shot.mp3');
+  var shot = new Audio('/assets/music/Shot.mp3');
   shot.volume = 1.0;
   shot.play();
 }
 
 Tank.prototype.fire = function() {
-  sound()
+  this.sound()
   this.bullets.push(new Bullet(this.arena, this, this.position.x, this.position.y, this.rotation));
 
 
