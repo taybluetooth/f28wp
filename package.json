@@ -2,7 +2,7 @@
   "name": "best-boy-tank",
   "version": "1.0.0",
   "description": "Tank game",
-  "main": "game.js",
+  "main": "src/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node src/server.js"
@@ -18,8 +18,11 @@
   },
   "homepage": "https://github.com/taybluetooth/f28wp#readme",
   "dependencies": {
+    "common.js": "^1.1.1",
     "express": "^4.17.1",
+    "helmet": "^3.21.2",
     "nunjucks": "^3.2.0",
-    "pixi.js": "^5.1.5"
+    "pixi.js": "^5.1.5",
+    "socket.io": "^2.3.0"
   }
 }
