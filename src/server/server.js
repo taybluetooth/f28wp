@@ -11,7 +11,7 @@ const webpackConfig = require('../../webpack.dev.js');
 const app = express();
 app.use(express.static('public'));
 
-if (process.env.NODE_ENV === 'production') {
+if (process.env.NODE_ENV === 'development') {
   // Setup Webpack for development
   const compiler = webpack(webpackConfig);
   app.use(webpackDevMiddleware(compiler));
