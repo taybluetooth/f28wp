@@ -37,7 +37,7 @@ module.exports = {
   },
   devServer: {
     disableHostCheck: true,
-    contentBase: ‘./dist’,
+    contentBase: './dist',
     compress: true,
     inline: true,
     port:server_port,
