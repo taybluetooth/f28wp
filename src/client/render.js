@@ -38,6 +38,8 @@ function render() {
   // Draw all players
   renderTank(me, me);
   others.forEach(renderTank.bind(null, me));
+
+  renderMinimap(me, others);
 }
 
 function renderBackground(x, y) {
@@ -108,6 +110,48 @@ function renderColour() {
     colour += letters[Math.floor(Math.random() * 16)];
   }
   return colour;
+}
+
+function renderMinimap(player, others) {
+  // set the scale to use for the minimap
+  let scale = 1 / 5;
+
+  // set width and height of the minimap, to be of ratio.
+  let width = canvas.width * scale;
+  let height = canvas.height * scale;
+
+  // the margin for the minimap
+  let margin = 20;
+
+  // fill in the rect background of the minimap
+  context.fillStyle = 'lightgrey';
+  context.fillRect(canvas.width - width - margin, canvas.height - height - margin, width, height);
+
+  // fill in the outline of the minimap
+  context.strokeStyle = 'black';
+  context.strokeRect(canvas.width - width - margin, canvas.height - height - margin, width, height);
+
+  // get player positions
+  const { x, y } = player;
+
+  // draw main player
+  context.fillStyle = 'red';
+  context.beginPath();
+  context.arc((canvas.width - width) + (x * (width/MAP_SIZE)), (canvas.height - height) + (y * (height/MAP_SIZE)), 3, 0, 2 * Math.PI);
+  context.closePath();
+  context.fill();
+
+  // display other players in the minimap
+  // TODO: fix this asap
+  for(let i = 0; i < others.length; i++) {
+    const { x, y } = others[i];
+
+    context.fillStyle = 'blue';
+    context.beginPath();
+    context.arc((canvas.width - width) + (x * (width/MAP_SIZE)), (canvas.height - height) + (y * (height/MAP_SIZE)), 5, 0, 2 * Math.PI);
+    context.closePath();
+    context.fill();
+  }
 }
 
 let renderInterval = setInterval(renderMainMenu, 1000 / 60);
