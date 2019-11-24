@@ -21,7 +21,7 @@ if (process.env.NODE_ENV === 'development') {
 }
 
 // Listen on port
-const port = gentle-thicket-88844.herokuapp.com:3000 || 3000;
+const port = floating-earth-06316.herokuapp.com:3000 || 3000;
 const server = app.listen(port);
 console.log(`Server listening on port ${port}`);
 
