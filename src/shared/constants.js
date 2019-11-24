@@ -1,5 +1,5 @@
 module.exports = Object.freeze({
-  TANK_RADIUS: 30,
+  TANK_RADIUS: 20,
   TANK_MAX_HP: 100,
   TANK_SPEED: 300,
   TANK_FIRE_COOLDOWN: 0.25,
