@@ -17,7 +17,7 @@ if (process.env.NODE_ENV === 'development') {
   app.use(webpackDevMiddleware(compiler));
 } else {
   // Static serve the dist/ folder in production
-  app.use(express.static('dist'));
+  app.use(express.static( __dirname + '/dist/'));
 }
 
 // Listen on port
