@@ -24,7 +24,6 @@ function render() {
   if (!me) {
     return;
   }
-
   // Draw background
   renderBackground(me.x, me.y);
 

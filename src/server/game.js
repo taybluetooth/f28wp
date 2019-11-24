@@ -37,7 +37,6 @@ class Game {
     const now = Date.now();
     const dt = (now - this.lastUpdateTime) / 1000;
     this.lastUpdateTime = now;
-
     // Update each bullet
     const bulletsToRemove = [];
     this.bullets.forEach(bullet => {
