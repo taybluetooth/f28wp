@@ -3,7 +3,6 @@ import { throttle } from 'throttle-debounce';
 import { processGameUpdate } from './state';
 
 const Constants = require('../shared/constants');
-var count = 0;
 
 const socket = io(`ws://${window.location.host}`, { reconnection: false });
 const connectedPromise = new Promise(resolve => {

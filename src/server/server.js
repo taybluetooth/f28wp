@@ -9,15 +9,15 @@ const webpackConfig = require('../../webpack.dev.js');
 
 // Setup an Express server
 const app = express();
-app.use(express.static(__dirname + '/public/'));
+app.use(express.static('public'));
 
-if (process.env.NODE_ENV === 'development') {
+if (process.env.NODE_ENV === 'production') {
   // Setup Webpack for development
   const compiler = webpack(webpackConfig);
   app.use(webpackDevMiddleware(compiler));
 } else {
   // Static serve the dist/ folder in production
-  app.use(express.static(__dirname + '/dist/'));
+  app.use(express.static('dist'));
 }
 
 // Listen on port
