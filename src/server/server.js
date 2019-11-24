@@ -16,8 +16,8 @@ if (process.env.NODE_ENV === 'development') {
   const compiler = webpack(webpackConfig);
   app.use(webpackDevMiddleware(compiler));
 } else {
-  // Static serve the dist/ folder in production
-  app.use(express.static('dist'));
+  // Static serve the public/ folder in production
+  app.use(express.static('public'));
 }
 
 // Listen on port
@@ -39,7 +39,6 @@ io.on('connection', socket => {
 
 // Setup the Game
 const game = new Game();
-game.addFood();
 
 function joinGame(username) {
   game.addTank(this, username);

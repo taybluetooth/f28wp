@@ -1,6 +1,5 @@
 const Constants = require('../shared/constants');
 const Tank = require('./tank');
-const Food = require('./food')
 const applyCollisions = require('./collisions');
 
 class Game {
@@ -8,7 +7,6 @@ class Game {
     this.sockets = {};
     this.tanks = {};
     this.bullets = [];
-    this.foods = [];
     this.lastUpdateTime = Date.now();
     this.shouldSendUpdate = false;
     setInterval(this.update.bind(this), 1000 / 60);
@@ -21,13 +19,6 @@ class Game {
     const x = Constants.MAP_SIZE * (0.25 + Math.random() * 0.5);
     const y = Constants.MAP_SIZE * (0.25 + Math.random() * 0.5);
     this.tanks[socket.id] = new Tank(socket.id, username, x, y);
-  }
-
-  addFood() {
-    var i;
-    for(i = 0; i < 1000; i++) {
-      this.foods[i] = new Food(this.randomCoord(Constants.MAP_SIZE), this.randomCoord(Constants.MAP_SIZE), this.randomCoord(360))
-    }
   }
 
   removeTank(socket) {
@@ -56,16 +47,6 @@ class Game {
       }
     });
     this.bullets = this.bullets.filter(bullet => !bulletsToRemove.includes(bullet));
-
-    // Update food
-    const foodToRemove = [];
-    this.foods.forEach(food => {
-      if (food.update(dt)) {
-        // Destroy food
-        //foodToRemove.push(food);
-      }
-    });
-    //this.foods = this.foods.filter(food => !foodToRemove.includes(food));
 
     // Update each tank
     Object.keys(this.sockets).forEach(tankID => {
@@ -125,16 +106,11 @@ class Game {
       b => b.distanceTo(tank) <= Constants.MAP_SIZE / 2,
     );
 
-    const nearbyFoods = this.foods.filter(
-      c => c.distanceTo(tank) <= Constants.MAP_SIZE / 2,
-    );
-
     return {
       t: Date.now(),
       me: tank.serializeForUpdate(),
       others: nearbyTanks.map(p => p.serializeForUpdate()),
       bullets: nearbyBullets.map(b => b.serializeForUpdate()),
-      foods: nearbyFoods.map(c => c.serializeForUpdate()),
       leaderboard,
     };
   }

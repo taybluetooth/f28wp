@@ -4,7 +4,7 @@ import { getCurrentState } from './state';
 
 const Constants = require('../shared/constants');
 
-const { TANK_RADIUS, TANK_MAX_HP, BULLET_RADIUS, FOOD_RADIUS, MAP_SIZE } = Constants;
+const { TANK_RADIUS, TANK_MAX_HP, BULLET_RADIUS, MAP_SIZE } = Constants;
 
 const canvas = document.getElementById('game-canvas');
 const context = canvas.getContext('2d');
@@ -20,7 +20,7 @@ function setCanvasDimensions() {
 window.addEventListener('resize', debounce(40, setCanvasDimensions));
 
 function render() {
-  const { me, others, bullets, foods } = getCurrentState();
+  const { me, others, bullets } = getCurrentState();
   if (!me) {
     return;
   }
@@ -29,15 +29,12 @@ function render() {
   renderBackground(me.x, me.y);
 
   // Draw boundaries
-  context.strokeStyle = 'white';
+  context.strokeStyle = 'black';
   context.lineWidth = 1;
   context.strokeRect(canvas.width / 2 - me.x, canvas.height / 2 - me.y, MAP_SIZE, MAP_SIZE);
 
   // Draw all bullets
   bullets.forEach(renderBullet.bind(null, me));
-
-  // Draw all food
-  foods.forEach(renderFood.bind(me));
 
   // Draw all players
   renderTank(me, me);
@@ -96,17 +93,6 @@ function renderBullet(me, bullet) {
     BULLET_RADIUS * 2,
     BULLET_RADIUS * 2,
   );
-}
-
-function renderFood(food) {
-  const { x, y } = food;
-  context.fillStyle = renderColour();
-  context.fillRect (
-    canvas.width / 2 + x - FOOD_RADIUS,
-    canvas.height / 2 + y - FOOD_RADIUS,
-    FOOD_RADIUS * 2,
-    FOOD_RADIUS * 2,
-  )
 }
 
 function renderMainMenu() {

@@ -35,11 +35,24 @@ module.exports = {
   },
   plugins: [
     new MiniCssExtractPlugin({
-      filename: '[name].[contenthash].css',
+      filename: 'stylesheet.css',
+      template: 'src/client/css/stylesheet.css',
+    }),
+    new MiniCssExtractPlugin({
+      filename: 'main.css',
+      template: 'src/client/css/main.css',
     }),
     new HtmlWebpackPlugin({
       filename: 'index.html',
       template: 'src/client/html/index.html',
+    }),
+    new HtmlWebpackPlugin({
+      filename: 'about.html',
+      template: 'src/client/html/about.html',
+    }),
+    new HtmlWebpackPlugin({
+      filename: 'contact.html',
+      template: 'src/client/html/contact.html',
     }),
   ],
 };
