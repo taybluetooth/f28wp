@@ -65,6 +65,7 @@ Tank.prototype.updateMovement = function(p) {
     if (this.arena.pressedKeys.up) {
       this.position.x += accelerationVector.x;
       this.position.y += accelerationVector.y;
+      this.sound("Moving", 0.3)
     }
     else if (this.arena.pressedKeys.down) {
       this.position.x -= accelerationVector.x;
@@ -95,14 +96,14 @@ Tank.prototype.updatePosition = function(p) {
   }
 };
 
-Tank.prototype.sound = function() {
-  var shot = new Audio('/assets/music/Shot.mp3');
-  shot.volume = 1.0;
+Tank.prototype.sound = function(soundFileName, volume) {
+  var shot = new Audio('/assets/music/'+soundFileName+'.mp3');
+  shot.volume = volume;
   shot.play();
 }
 
 Tank.prototype.fire = function() {
-  this.sound()
+  this.sound("Shot", 1)
   this.bullets.push(new Bullet(this.arena, this, this.position.x, this.position.y, this.rotation));
 
 
