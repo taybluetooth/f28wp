@@ -1,28 +1,36 @@
-const mysql = require('mysql');
+var express = require('express');
+var mysql = require('mysql');
+var app = express();
 
-const con = mysql.createConnection({
-	host: "localhost",
-	user: "webProgGame",
-	password: "password123",
-	database: "userdb"
+var con = mysql.createConnection({
+//Properties of the mysql server to connect to
+	host: 'localhost', //should be as simple as changing to appropriate host, but wouldn't run locally for me so haven't made that change
+	user: 'webProgGame',
+	password: 'password123',
+	database: 'userdb'
 });
 
-con.connect(function(err) {
-    if (err) {
-        console.error('Error connecting: ' + err.stack);
-        return;
-    }
-
-    console.log('Connected as id ' + con.threadId);
+con.connect(function(error) {
+	//returns error if connection fails
+	if (!!error) {
+		console.log('Error connecting');
+	} else {
+		console.log('Connected');
+	}
 });
 
-con.query('SELECT * FROM users', function (error, results) {
-    if (error)
-        throw error;
-
-    results.forEach(result => {
-        console.log(result);
-    });
+app.get('/', function(req, resp) {
+	//mysql query that isn't ran until called from app using port 1337
+	con.query("SELECT * FROM users", function(error, rows, fields){
+		//callback
+		if (!!error) {
+			console.log('Error in query');
+		} else {
+			console.log('Successful query\n');
+			console.log(rows);
+		}
+	});
 });
 
-con.end();
+app.listen(1337);
+//once script is run locally, if terminal says connected, go to localhost:1337 in a browser to run the query
