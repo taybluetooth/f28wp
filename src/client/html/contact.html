@@ -2,6 +2,7 @@
 <html>
 <head>
   <link href="https://fonts.googleapis.com/css?family=Alata&display=swap" rel="stylesheet">
+  <!--<script src="/carousel.js"></script>-->
 </head>
 <body>
   <section class="navigation">
@@ -11,71 +12,91 @@
               <li><a href="/contact.html" class="link">Contact</a></li>
           </ul>
   </section>
-  <section class = "content">
-  <div class="row">
-    <div class="column">
-      <div class="card">
-        <img src="/assets/CALLUM.jpg" alt="CALLUM" style="width:100%">
-        <div class="container">
-          <h2>CALLUM TAYLOR</h2>
-          <p class="title">LEAD DEVELOPER</p>
-          <p>CALLUM TAYLOR IS THE LEAD DESIGNER OF THE GAME AND HELPED IMPLENTENT THE GAME.</p>
-          <p>CALLUMTAYLORBUSINESS@GMAIL.COM</p>
-        </div>
-      </div>
-    </div>
 
-    <div class="column">
-      <div class="card">
-        <img src="/assets/HAYDN.jpg" alt="HAYDN" style="width:100%">
-        <div class="container">
-          <h2>HAYDN MCGRATH</h2>
-          <p class="title">DATABASE ENGINEER</p>
-          <p>HAYDN MCGRATH CREATED THE DATABASE WHICH STORED THE DATABASE ON THE SERVER.</p>
-          <p>HAYDNMCGRATH@GMAIL.COM</p>
-        </div>
-      </div>
-    </div>
-    <div class="column">
-      <div class="card">
+    <div class="card-carousel">
+      <div class="person-card">
         <img src="/assets/ISKANDER.jpg" alt="ISKANDER" style="width:100%">
-        <div class="container">
-          <h2>ISKANDER MUFAZALOV</h2>
-          <p class="title">DESIGNER</p>
-          <p>SOME TEST HERE SOME TEST HERESOME TEST HERESOME TEST HERESOME TEST HERE.</p>
-          <p>ISKANDERMUFAZALOV@GMAIL.COM</p>
-        </div>
+          <h2 class="title">Iskander Mufazalov</h2>
+          <p class="title">Assets Manager</p>
+          <p>Iskander helped to get the bullets working alongside asset generation</p>
       </div>
-    </div>
-  	<div class="column">
-      <div class="card">
+  	  <div class="person-card">
+        <img src="/assets/HAYDN.jpg" alt="HAYDN" style="width:100%">
+          <h2 class="title">Haydn McGrath</h2>
+          <p class="title">Data Scientist</p>
+          <p>Haydn helped to establish the server infrastructure and database backend.</p>
+      </div>
+      <div class="person-card">
+        <img src="/assets/CALLUM.jpg" alt="CALLUM" style="width:100%">
+          <h2 class="title">Callum Taylor</h2>
+          <p class="title">Project Manager</p>
+          <p>Callum Taylor is the lead designer and implemented the client side and most of the server side.</p>
+      </div>
+  	  <div class="person-card">
         <img src="/assets/MICHAEL.jpg" alt="MICHAEL" style="width:100%">
-        <div class="container">
-          <h2>MICHAEL SOUTAR</h2>
-          <p class="title">WEBSITE MAKER</p>
-          <p>MICHAEL SOUTAR CREATED THE WEBSITE THAT IS STORING THE WEBSITE ITSELF AND THE OTHER PAGES.</p>
-          <p>MICHAELSOUTAR@GMAIL.COM</p>
-        </div>
+          <h2 class="title">Michael Soutar</h2>
+          <p class="title">Front End Web Developer</p>
+          <p>Michael designed the entirety of the website and front-end side of the project.</p>
       </div>
-    </div>
-  	<div class="column">
-      <div class="card">
+  	  <div class="person-card">
         <img src="/assets/JACOB.jpg" alt="JACOB" style="width:100%">
-        <div class="container">
-          <h2>JACOB MOWAT</h2>
-          <p class="title">NON EXISTANT</p>
-          <p>HAS GONE MISSING FOR AN EXSTENDED PART OF TIME AND IS NO WHERE TO BE SEEN.</p>
-          <p>JACOBMOWAT@GMAIL.COM</p>
-        </div>
+          <h2 class="title">Jacob Mowat</h2>
+          <p class="title">JS Developer</p>
+          <p>Did dissapear for a while but Jacob helped develop aspects of the server side such as the minimap.</p>
       </div>
-    </div>
-  </div>
-  <section class="ContactUS">
-    <div class = "Form">
-    </div>
-
+	 </div>
 
   </section>
+
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js"
+        integrity="sha384-tsQFqpEReu7ZLhBV2VZlAu7zcOV+rXbYlF2cqB8txI/8aZajjp4Bqd+V6D5IgvKT"
+        crossorigin="anonymous">
+  </script>
+
+  <script>
+  $num = $('.person-card').length;
+  $even = $num / 2;
+  $odd = ($num + 1) / 2;
+
+  if ($num % 2 == 0) {
+    $('.person-card:nth-child(' + $even + ')').addClass('active');
+    $('.person-card:nth-child(' + $even + ')').prev().addClass('prev');
+    $('.person-card:nth-child(' + $even + ')').next().addClass('next');
+  } else {
+    $('.person-card:nth-child(' + $odd + ')').addClass('active');
+    $('.person-card:nth-child(' + $odd + ')').prev().addClass('prev');
+    $('.person-card:nth-child(' + $odd + ')').next().addClass('next');
+  }
+
+  $('.person-card').click(function() {
+    $slide = $('.active').width();
+    console.log($('.active').position().left);
+
+    if ($(this).hasClass('next')) {
+      $('.card-carousel').stop(false, true).animate({left: '-=' + $slide});
+    } else if ($(this).hasClass('prev')) {
+      $('.card-carousel').stop(false, true).animate({left: '+=' + $slide});
+    }
+
+    $(this).removeClass('prev next');
+    $(this).siblings().removeClass('prev active next');
+
+    $(this).addClass('active');
+    $(this).prev().addClass('prev');
+    $(this).next().addClass('next');
+  });
+
+
+  // Keyboard nav
+  $('html body').keydown(function(e) {
+    if (e.keyCode == 37) { // left
+      $('.active').prev().trigger('click');
+    }
+    else if (e.keyCode == 39) { // right
+      $('.active').next().trigger('click');
+    }
+  });
+  </script>
 
 </body>
 </html>

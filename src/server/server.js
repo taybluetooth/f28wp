@@ -19,15 +19,9 @@ const webpackConfig = require('../../webpack.dev.js');
 const app = express();
 app.use(express.static('public'));
 
-// if node environment is development, initialise webpack server
-if (process.env.NODE_ENV === 'development') {
   // initialise webpack for development
-  const compiler = webpack(webpackConfig);
-  app.use(webpackDevMiddleware(compiler));
-} else {
-  // create dist directory if node environment is production
-  app.use(express.static('dist'));
-}
+const compiler = webpack(webpackConfig);
+app.use(webpackDevMiddleware(compiler));
 
 // listen on port given by heroku
 const port = process.env.PORT || 3000;

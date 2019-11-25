@@ -3,7 +3,6 @@ html, body {
   padding: 0;
   font-family: 'Alata', sans-serif;
   text-decoration: none;
-  overflow: hidden;
 }
 
 hr {
@@ -39,7 +38,7 @@ button:focus {
 }
 
 #play-menu {
-  position: fixed;
+  position: absolute;
   top: 50%;
   left: 50%;
   transform: translateY(-50%) translateX(-50%);
@@ -50,6 +49,8 @@ button:focus {
   align-items: center;
   border-radius: 5px;
   text-align: center;
+  overflow: hidden;
+  color: #000033;
 }
 
 #play-menu p {
@@ -143,7 +144,6 @@ button:focus {
 }
 
 .main-nav {
-    margin: 0;
     list-style-type: none;
     display: flex;
     justify-content: center;
@@ -153,7 +153,6 @@ button:focus {
     position: relative;
     position: fixed;
     width: 100%;
-    overflow: hidden;
 }
 
 .link {
@@ -161,6 +160,11 @@ button:focus {
     text-decoration: none;
     position: relative;
     margin: 0px 50px 0px 50px;
+}
+
+.link:hover {
+  text-decoration: none;
+  color: white;
 }
 
 .link:before {
@@ -224,40 +228,6 @@ button:focus {
   box-sizing: inherit;
 }
 
-.column {
-  margin-top: 50px;
-  float: left;
-  width: 20%;
-  margin-bottom: 16px;
-  padding: 0 8px;
-  margin-left: 30px;
-}
-
-.card {
-  margin-top: 10%;
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-}
-
-.container {
-  padding: 0 16px;
-}
-
-.row {
-  display: flex;
-  margin: 0;
-  padding: 10px;
-}
-
-.container::after, .row::after {
-  content: "";
-  clear: both;
-  display: table;
-}
-
-.title {
-  color: grey;
-}
-
 .button {
   border: none;
   outline: 0;
@@ -272,6 +242,140 @@ button:focus {
 
 .button:hover {
   background-color: #555;
+}
+
+.card-carousel {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-top: 100px;
+}
+
+.card-carousel .person-card {
+  height: 20rem;
+  width: 12rem;
+  z-index: 1;
+  position: relative;
+  -webkit-transform: scale(0.6) translateY(-2rem);
+  transform: scale(0.6) translateY(-2rem);
+  opacity: 0;
+  cursor: pointer;
+  pointer-events: none;
+  background: #000033;
+  transition: 1s;
+  text-align: center;
+}
+
+.card-carousel .person-card .title {
+  color: #fff;
+}
+
+.card-carousel .person-card:after {
+  content: '';
+  position: absolute;
+  height: 2px;
+  width: 100%;
+  border-radius: 100%;
+  background-color: rgba(0,0,0,0.3);
+  bottom: -5rem;
+  -webkit-filter: blur(4px);
+  filter: blur(4px);
+}
+
+.card-carousel .person-card.active {
+  z-index: 3;
+  -webkit-transform: scale(1) translateY(0) translateX(0);
+  transform: scale(1) translateY(0) translateX(0);
+  opacity: 1;
+  pointer-events: auto;
+  transition: 1s;
+}
+
+.card-carousel .person-card.prev, .card-carousel .person-card.next {
+  z-index: 2;
+  -webkit-transform: scale(0.8) translateY(-1rem) translateX(0);
+  transform: scale(0.8) translateY(-1rem) translateX(0);
+  opacity: 0.6;
+  pointer-events: auto;
+  transition: 1s;
+}
+
+.card-carousel .person-card:nth-child(0):before {
+  content: '0';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translateX(-50%) translateY(-50%);
+  transform: translateX(-50%) translateY(-50%);
+  font-size: 3rem;
+  font-weight: 300;
+  color: #fff;
+}
+
+.card-carousel .person-card:nth-child(1):before {
+  content: '1';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translateX(-50%) translateY(-50%);
+  transform: translateX(-50%) translateY(-50%);
+  font-size: 3rem;
+  font-weight: 300;
+  color: #fff;
+}
+
+.card-carousel .person-card:nth-child(2):before {
+  content: '2';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translateX(-50%) translateY(-50%);
+  transform: translateX(-50%) translateY(-50%);
+  font-size: 3rem;
+  font-weight: 300;
+  color: #fff;
+}
+
+.card-carousel .person-card:nth-child(3):before {
+  content: '3';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translateX(-50%) translateY(-50%);
+  transform: translateX(-50%) translateY(-50%);
+  font-size: 3rem;
+  font-weight: 300;
+  color: #fff;
+}
+
+.card-carousel .person-card:nth-child(4):before {
+  content: '4';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translateX(-50%) translateY(-50%);
+  transform: translateX(-50%) translateY(-50%);
+  font-size: 3rem;
+  font-weight: 300;
+  color: #fff;
+}
+
+.content-header {
+  padding: 16px 12px;
+  display: block;
+}
+
+.content-img {
+  width: 50%;
+  height: 50%;
+  margin: 0;
+  padding: 0;
+}
+
+.content-section {
+  float: right;
+  padding: 16px 12px;
+  display: block;
 }
 
 @media screen and (max-width: 500px) {

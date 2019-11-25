@@ -10,7 +10,7 @@ module.exports = {
   },
   output: {
     filename: '[name].[contenthash].js',
-    path: path.resolve(__dirname, 'dist'),
+    path: path.resolve(__dirname, 'public'),
   },
   module: {
     rules: [
@@ -37,11 +37,12 @@ module.exports = {
   },
   devServer: {
     disableHostCheck: true,
-    contentBase: './dist',
+    contentBase: './public',
     compress: true,
     inline: true,
     port:server_port,
-    host:server_host
+    host:server_host,
+    watchContentBase: true
   },
   plugins: [
     new MiniCssExtractPlugin({
