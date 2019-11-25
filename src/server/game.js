@@ -1,6 +1,14 @@
+// import constants from constants directory
+// import main tank class
+// import collision detection class
+
 const Constants = require('../shared/constants');
 const Tank = require('./tank');
 const applyCollisions = require('./collisions');
+
+// main game constructor method
+// initialise all sockets connected
+// initialise tank and bullet arrays
 
 class Game {
   constructor() {
@@ -12,6 +20,8 @@ class Game {
     setInterval(this.update.bind(this), 1000 / 60);
   }
 
+  // method which adds a tank object to the game upon connection
+
   addTank(socket, username) {
     this.sockets[socket.id] = socket;
 
@@ -21,10 +31,14 @@ class Game {
     this.tanks[socket.id] = new Tank(socket.id, username, x, y);
   }
 
+  // method which deletes the tank upon disconnection
+
   removeTank(socket) {
     delete this.sockets[socket.id];
     delete this.tanks[socket.id];
   }
+
+  // method which calculates the direction of a given tank
 
   handleInput(socket, dir) {
     if (this.tanks[socket.id]) {
@@ -32,31 +46,33 @@ class Game {
     }
   }
 
+  // game update function which utilises functions from the state class
+
   update() {
-    // Calculate time elapsed
     const now = Date.now();
     const dt = (now - this.lastUpdateTime) / 1000;
     this.lastUpdateTime = now;
-    // Update each bullet
+    // update all bullets
     const bulletsToRemove = [];
     this.bullets.forEach(bullet => {
       if (bullet.update(dt)) {
-        // Destroy bullet
+        // delete each bullet fired
         bulletsToRemove.push(bullet);
       }
     });
     this.bullets = this.bullets.filter(bullet => !bulletsToRemove.includes(bullet));
 
-    // Update each tank
+    // update all tanks
     Object.keys(this.sockets).forEach(tankID => {
       const tank = this.tanks[tankID];
       const newBullet = tank.update(dt);
+      // if bullet fired, push to array and render it
       if (newBullet) {
         this.bullets.push(newBullet);
       }
     });
 
-    // Apply collisions, give tanks score for hitting bullets
+    // aply collisions, give tanks points for shooting other tanks
     const destroyedBullets = applyCollisions(Object.values(this.tanks), this.bullets);
     destroyedBullets.forEach(b => {
       if (this.tanks[b.parentID]) {
@@ -65,7 +81,7 @@ class Game {
     });
     this.bullets = this.bullets.filter(bullet => !destroyedBullets.includes(bullet));
 
-    // Check if any tanks are dead
+    // delete any tanks whose health is at 0
     Object.keys(this.sockets).forEach(tankID => {
       const socket = this.sockets[tankID];
       const tank = this.tanks[tankID];
@@ -75,7 +91,7 @@ class Game {
       }
     });
 
-    // Send a game update to each tank every other time
+    // send the current state of update to each tank in the game
     if (this.shouldSendUpdate) {
       const leaderboard = this.getLeaderboard();
       Object.keys(this.sockets).forEach(tankID => {
@@ -89,6 +105,7 @@ class Game {
     }
   }
 
+  // method which gets the current state of the leaderboard
   getLeaderboard() {
     return Object.values(this.tanks)
       .sort((p1, p2) => p2.score - p1.score)
@@ -96,6 +113,7 @@ class Game {
       .map(p => ({ username: p.username, score: Math.round(p.score) }));
   }
 
+  // method which will return the value for an object based on serializeForUpdate object method
   createUpdate(tank, leaderboard) {
 
     const nearbyTanks = Object.values(this.tanks).filter(
@@ -113,6 +131,8 @@ class Game {
       leaderboard,
     };
   }
+
+  // helper function which generates a random number used for coordinates
 
   randomCoord(max) {
     return Math.floor(Math.random() * Math.floor(max));

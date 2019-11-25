@@ -1,3 +1,8 @@
+// this is a class which defines a set of constants
+// for other classes to use
+
+// uses object.freeze to ensure object can't be changed
+
 module.exports = Object.freeze({
   TANK_RADIUS: 20,
   TANK_MAX_HP: 100,

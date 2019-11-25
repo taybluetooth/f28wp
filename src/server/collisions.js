@@ -1,15 +1,18 @@
+// import constants from constants directory
+
 const Constants = require('../shared/constants');
 
-// Returns an array of bullets to be destroyed.
+// method which pushes bullets that need to be deleted in an array and returns it
 function applyCollisions(tanks, bullets) {
   const destroyedBullets = [];
   for (let i = 0; i < bullets.length; i++) {
-    // Look for a tank (who didn't create the bullet) to collide each bullet with.
-    // As soon as we find one, break out of the loop to prevent double counting a bullet.
+    // check if bullet collided with another tank
     for (let j = 0; j < tanks.length; j++) {
       const bullet = bullets[i];
       const tank = tanks[j];
       if (
+        // if bullet uuid does not equal that of the tank which fired it
+        // then calcutae the distance between the other tank and bullet
         bullet.parentID !== tank.id &&
         tank.distanceTo(bullet) <= Constants.TANK_RADIUS + Constants.BULLET_RADIUS
       ) {
@@ -19,7 +22,9 @@ function applyCollisions(tanks, bullets) {
       }
     }
   }
+  // return destroyed bullets array
   return destroyedBullets;
 }
 
+// export as applyCollisions
 module.exports = applyCollisions;
