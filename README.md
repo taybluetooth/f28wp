@@ -1,7 +1,7 @@
 # F28WP
 Web Programming Coursework for 2nd Year Computer Science/Software Engineering
 
-![Best Boy Tank](./tank-readme.svg =250x250)
+<img src="./tank-readme.svg" alt="Best Boy Tank" width="250" height="250">
 
 # :trophy: Best Boy Tank :trophy:
 
