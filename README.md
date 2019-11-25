@@ -1,11 +1,14 @@
 # F28WP
 Web Programming Coursework for 2nd Year Computer Science/Software Engineering
 
+![Best Boy Tank](./tank-readme.svg)
+
 # Best Boy Tank
 
-A top down 'Tanks' inspired game where the goal is to destroy other users tanks in a MMOG setting. The game will mainly be developed in Javascript,
-but also use potential technologies such as Socket.IO to maintain server connections and MySQL to manage database storage. The development team currently consists of
-Callum Taylor, Jacob Mowat, Iskander Mufazalov, Michael Soutar and Haydn McGrath.
+Best Boy Tank is an IO style tank game developed by Callum Taylor, Haydn McGrath, Iskander Mufazalov
+, Michael Soutar and Jacob Mowat. The game uses technologies such as HTML, CSS, JS and MySQL and libraries
+such as webpack for parsing and uuid for unique identification. The server infrastructure consists of node.js
+, express.js and also socket.io to manage websockets.
 
 # Coursework Details
 A develop an online multiplayer game that that lets players interact and play other people in realtime. Store and view information (e.g., high-scores, number of online active players). Play other
@@ -49,13 +52,13 @@ services)
 
 # Server Instructions
 
-- launch git bash or a terminal
-- ensure express js is install (npm installl express)
-- navigate to best boy tank src directory
-- type npm run start
-- in browser go to localhost:3000
+- navigate to root directory
+- install all dependencies with 'npm install'
+- once installed, run server with 'npm run start'
+- once compiled, in your browser, type localhost:3000
+- alternatively we have a live page url where multiplayer can be seen visually
+- https://limitless-shore-25169.herokuapp.com/
 
-
-
+# Best Boy Tank Official Trailer
 
 Youtube Url - https://www.youtube.com/watch?v=Mlh3adyuV4Y&feature=youtu.be
