@@ -42,12 +42,12 @@ io.on('connection', socket => {
 
 // initialise the Game
 const game = new Game();
-game.addFood();
 
 // join game method which adds tank object to game
 
 function joinGame(username) {
   game.addTank(this, username);
+  console.log(game.tanks.length);
 }
 
 // method which applys input method to recently joined tank

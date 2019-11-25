@@ -1,7 +1,7 @@
 // import socket.io and throttle debounce for network stability
 // import state class to get game update functions
 
-import io from 'socket.io-client';
+import * as io from 'socket.io-client'
 import { throttle } from 'throttle-debounce';
 import { processGameUpdate } from './state';
 
@@ -9,12 +9,10 @@ import { processGameUpdate } from './state';
 
 const Constants = require('../shared/constants');
 // when tank connects, add to server and log confirmation of connection
-export var playersConnected = 0;
 
 const socket = io(`ws://${window.location.host}`, { reconnection: false });
 const connectedPromise = new Promise(resolve => {
   socket.on('connect', () => {
-    playersConnected += 1;
     console.log('Connected to server!');
     resolve();
   });
@@ -27,7 +25,6 @@ export const connect = onGameOver => (
     socket.on(Constants.MSG_TYPES.GAME_UPDATE, processGameUpdate);
     socket.on(Constants.MSG_TYPES.GAME_OVER, onGameOver);
     socket.on('disconnect', () => {
-      playersConnected -= 1;
       console.log('Disconnected from server.');
       document.getElementById('disconnect-modal').classList.remove('hidden');
       document.getElementById('reconnect-button').onclick = () => {

@@ -52,8 +52,6 @@ function render() {
 
   bullets.forEach(renderBullet.bind(null, me));
 
-  foods.forEach(renderFood.bind(null));
-
   // draw local tank and 'others' which represents tanks already in the game
 
   renderTank(me, me);
