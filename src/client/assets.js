@@ -9,9 +9,13 @@ const ASSET_NAMES = [
   'TITLE.jpg'
 ];
 
+// load asset file names
+
 const assets = {};
 
 const downloadPromise = Promise.all(ASSET_NAMES.map(downloadAsset));
+
+// once connection is established, load assets into array and export.
 
 function downloadAsset(assetName) {
   return new Promise(resolve => {

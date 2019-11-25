@@ -1,18 +1,26 @@
 
+// import leaderboard to use in main game update method
+
 import { updateLeaderboard } from './leaderboard';
 
-// The "current" state will always be RENDER_DELAY ms behind server time.
-// This makes gameplay smoother and lag less noticeable.
+// rendering delay to ensure network can keep up
+
 const RENDER_DELAY = 100;
+
+// game state variable which controls any changes in game
 
 const gameUpdates = [];
 let gameStart = 0;
 let firstServerTimestamp = 0;
 
+// setter method for initialising the server state
+
 export function initState() {
   gameStart = 0;
   firstServerTimestamp = 0;
 }
+
+// main method for processing updates respective to time, will push updates to gameUpdates
 
 export function processGameUpdate(update) {
   if (!firstServerTimestamp) {
@@ -30,12 +38,15 @@ export function processGameUpdate(update) {
   }
 }
 
+// getter method for server time at call
+
 function currentServerTime() {
   return firstServerTimestamp + (Date.now() - gameStart) - RENDER_DELAY;
 }
 
-// Returns the index of the base update, the first game update before
-// current server time, or -1 if N/A.
+
+// returns the index of the base update
+
 function getBaseUpdate() {
   const serverTime = currentServerTime();
   for (let i = gameUpdates.length - 1; i >= 0; i--) {
@@ -46,7 +57,8 @@ function getBaseUpdate() {
   return -1;
 }
 
-// Returns { me, others, bullets, food }
+// returns local tank, others, and bullets
+
 export function getCurrentState() {
   if (!firstServerTimestamp) {
     return {};
@@ -55,8 +67,9 @@ export function getCurrentState() {
   const base = getBaseUpdate();
   const serverTime = currentServerTime();
 
-  // If base is the most recent update we have, use its state.
-  // Otherwise, interpolate between its state and the state of (base + 1).
+  // interpolation which gives updates on each object and creates new data entries in
+  // game update
+
   if (base < 0 || base === gameUpdates.length - 1) {
     return gameUpdates[gameUpdates.length - 1];
   } else {
@@ -70,6 +83,8 @@ export function getCurrentState() {
     };
   }
 }
+
+// interpolation helper function which takes two objects and calculates a new data entry
 
 function interpolateObject(object1, object2, ratio) {
   if (!object2) {
@@ -87,24 +102,23 @@ function interpolateObject(object1, object2, ratio) {
   return interpolated;
 }
 
+// non recursive method of interpolating an entire array
+
 function interpolateObjectArray(objects1, objects2, ratio) {
   return objects1.map(o => interpolateObject(o, objects2.find(o2 => o.id === o2.id), ratio));
 }
 
-// Determines the best way to rotate (cw or ccw) when interpolating a direction.
-// For example, when rotating from -3 radians to +3 radians, we should really rotate from
-// -3 radians to +3 - 2pi radians.
+// method which determines the best way to rotate based on the angle calculated between d1 and d2
 function interpolateDirection(d1, d2, ratio) {
   const absD = Math.abs(d2 - d1);
   if (absD >= Math.PI) {
-    // The angle between the directions is large - we should rotate the other way
+    // angle between the directions is large therefore we should rotate opposite way
     if (d1 > d2) {
       return d1 + (d2 + 2 * Math.PI - d1) * ratio;
     } else {
       return d1 - (d2 - 2 * Math.PI - d1) * ratio;
     }
   } else {
-    // Normal interp
     return d1 + (d2 - d1) * ratio;
   }
 }
