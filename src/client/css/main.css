@@ -360,6 +360,18 @@ button:focus {
   color: #fff;
 }
 
+.card-carousel .person-card:nth-child(5):before {
+  content: '5';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translateX(-50%) translateY(-50%);
+  transform: translateX(-50%) translateY(-50%);
+  font-size: 3rem;
+  font-weight: 300;
+  color: #fff;
+}
+
 .content-header {
   padding: 16px 12px;
   display: block;
