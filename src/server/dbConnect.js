@@ -1,13 +1,28 @@
-var mysql = require('mysql');
+const mysql = require('mysql');
 
-var con = mysql.createConnection({
+const con = mysql.createConnection({
 	host: "localhost",
-	database: "userdb",
 	user: "webProgGame",
-	password: "password123"
+	password: "password123",
+	database: "userdb"
 });
 
 con.connect(function(err) {
-	if(err) throw err;
-	console.log("Connected to Database!");
+    if (err) {
+        console.error('Error connecting: ' + err.stack);
+        return;
+    }
+
+    console.log('Connected as id ' + con.threadId);
 });
+
+con.query('SELECT * FROM users', function (error, results) {
+    if (error)
+        throw error;
+
+    results.forEach(result => {
+        console.log(result);
+    });
+});
+
+con.end();
