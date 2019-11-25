@@ -1,5 +1,5 @@
 
-import { connect, play } from './networking';
+import { connect, play, playersConnected} from './networking';
 import { startRendering, stopRendering } from './render';
 import { startCapturingInput, stopCapturingInput } from './input';
 import { downloadAssets } from './assets';
@@ -14,6 +14,7 @@ import './css/main.css';
 const playMenu = document.getElementById('play-menu');
 const playButton = document.getElementById('play-button');
 const usernameInput = document.getElementById('username-input');
+const playersOnline = document.getElementById('players-online');
 
 // on connection download assets
 
@@ -25,6 +26,7 @@ Promise.all([
   usernameInput.focus();
   playButton.onclick = () => { // once play button is clicked, hide menu and render game
     play(usernameInput.value);
+    playersOnline.innerHTML = playersConnected;
     playMenu.classList.add('hidden');
     initState();
     startCapturingInput();

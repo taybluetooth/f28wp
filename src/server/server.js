@@ -19,7 +19,7 @@ const webpackConfig = require('../../webpack.dev.js');
 const app = express();
 app.use(express.static('public'));
 
-  // initialise webpack for development
+// initialise webpack for development
 const compiler = webpack(webpackConfig);
 app.use(webpackDevMiddleware(compiler));
 
@@ -42,6 +42,7 @@ io.on('connection', socket => {
 
 // initialise the Game
 const game = new Game();
+game.addFood();
 
 // join game method which adds tank object to game
 

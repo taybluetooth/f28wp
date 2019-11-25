@@ -4,6 +4,7 @@
 
 const Constants = require('../shared/constants');
 const Tank = require('./tank');
+const Food = require('./food');
 const applyCollisions = require('./collisions');
 
 // main game constructor method
@@ -15,6 +16,7 @@ class Game {
     this.sockets = {};
     this.tanks = {};
     this.bullets = [];
+    this.foods = [];
     this.lastUpdateTime = Date.now();
     this.shouldSendUpdate = false;
     setInterval(this.update.bind(this), 1000 / 60);
@@ -29,6 +31,15 @@ class Game {
     const x = Constants.MAP_SIZE * (0.25 + Math.random() * 0.5);
     const y = Constants.MAP_SIZE * (0.25 + Math.random() * 0.5);
     this.tanks[socket.id] = new Tank(socket.id, username, x, y);
+  }
+
+  addFood() {
+    var i;
+    const x = Constants.MAP_SIZE * (0.25 + Math.random() * 0.5);
+    const y = Constants.MAP_SIZE * (0.25 + Math.random() * 0.5);
+    for(i = 0; i < 1000; i++) {
+      this.foods.push(new Food(x, y));
+    }
   }
 
   // method which deletes the tank upon disconnection
@@ -123,11 +134,16 @@ class Game {
       b => b.distanceTo(tank) <= Constants.MAP_SIZE / 2,
     );
 
+    const nearbyFoods = this.foods.filter(
+      c => c.distanceTo(tank) <= Constants.MAP_SIZE / 2,
+    );
+
     return {
       t: Date.now(),
       me: tank.serializeForUpdate(),
       others: nearbyTanks.map(p => p.serializeForUpdate()),
       bullets: nearbyBullets.map(b => b.serializeForUpdate()),
+      foods: nearbyFoods.map(c => c.serializeForUpdate()),
       leaderboard,
     };
   }

@@ -9,7 +9,7 @@ import { getCurrentState } from './state';
 
 const Constants = require('../shared/constants');
 
-const { TANK_RADIUS, TANK_MAX_HP, BULLET_RADIUS, MAP_SIZE } = Constants;
+const { TANK_RADIUS, TANK_MAX_HP, BULLET_RADIUS, FOOD_RADIUS, MAP_SIZE } = Constants;
 
 // get canvas and context from html
 
@@ -33,7 +33,7 @@ window.addEventListener('resize', debounce(40, setCanvasDimensions));
 // main render function
 
 function render() {
-  const { me, others, bullets } = getCurrentState();
+  const { me, others, bullets, foods } = getCurrentState();
   if (!me) {
     return;
   }
@@ -51,6 +51,8 @@ function render() {
   // draw bullets when pushed to array
 
   bullets.forEach(renderBullet.bind(null, me));
+
+  foods.forEach(renderFood.bind(null));
 
   // draw local tank and 'others' which represents tanks already in the game
 
@@ -119,6 +121,18 @@ function renderBullet(me, bullet) {
     BULLET_RADIUS * 2,
   );
 }
+
+function renderFood(food) {
+  const { x, y } = food;
+  context.drawImage(
+    getAsset('bullet.svg'),
+    canvas.width / 2 + x - FOOD_RADIUS,
+    canvas.height / 2 + y - FOOD_RADIUS,
+    FOOD_RADIUS * 2,
+    FOOD_RADIUS * 2,
+  );
+}
+
 
 // method which draws main io menu for gathering username
 
