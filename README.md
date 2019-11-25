@@ -1,9 +1,9 @@
 # F28WP
 Web Programming Coursework for 2nd Year Computer Science/Software Engineering
 
-![Best Boy Tank](./tank-readme.svg)
+![Best Boy Tank](./tank-readme.svg =250x250)
 
-# Best Boy Tank
+# :trophy: Best Boy Tank :trophy:
 
 Best Boy Tank is an IO style tank game developed by Callum Taylor, Haydn McGrath, Iskander Mufazalov
 , Michael Soutar and Jacob Mowat. The game uses technologies such as HTML, CSS, JS and MySQL and libraries
@@ -50,7 +50,7 @@ services)
 - HTML5/CSS/Javascript complient
 - Animated and dynamic
 
-# Server Instructions
+# :man_scientist: Server Instructions :man_scientist:
 
 - navigate to root directory
 - install all dependencies with 'npm install'
